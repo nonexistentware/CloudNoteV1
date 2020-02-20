@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.RegisterActivity"
+    android:orientation="vertical">
+
+    <LinearLayout android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView android:id="@+id/user_image_reg"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_account_circle_black_24dp" />
+
+        <EditText android:textColorHint="@android:color/black"
+            android:id="@+id/user_email_reg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your email"
+            android:inputType="textEmailAddress" />
+
+        <EditText android:textColorHint="@android:color/black"
+            android:id="@+id/user_pass_reg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter pass"
+            android:inputType="textPassword" />
+
+        <TextView android:textColor="@android:color/black"
+            android:id="@+id/user_reg_btn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Register new user" />
+
+        <TextView android:textColor="@android:color/black"
+            android:id="@+id/to_login_screen"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Already have account" />
+    </LinearLayout>
+
+
+</LinearLayout>

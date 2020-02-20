@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Nav Drawer">
+        <menu>
+
+    <item
+        android:title="Register"
+        android:id="@+id/menu_drawer_register"/>
+
+    <item
+        android:title="Login"
+        android:id="@+id/menu_drawer_login"/>
+
+    <item
+        android:title="User profile"
+        android:id="@+id/menu_drawable_user_profile"/>
+
+    <item
+        android:title="Sign Out"
+        android:id="@+id/menu_drawer_signout"/>
+
+</menu>
+</item>
+</menu>
