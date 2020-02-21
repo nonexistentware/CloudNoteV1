@@ -1,6 +1,6 @@
 package com.nonexistentware.cloudnotev1.Common;
 
-import com.nonexistentware.cloudnotev1.Model.CloudNoteItem;
+import com.nonexistentware.cloudnotev1.Model.NoteItem;
 
 public class Common {
 
@@ -14,7 +14,7 @@ public class Common {
 
     public static String USER_ID_SELECTED;
 
-    public static CloudNoteItem select_cloud_note = new CloudNoteItem();
+    public static NoteItem select_cloud_note = new NoteItem();
 
     public static String select_user_key;
 

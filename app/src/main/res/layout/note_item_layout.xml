@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3.0">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0">
+
+            <ImageView
+                android:id="@+id/cloud_note_image_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/cloud_note_title_item"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Cloud note title" />
+
+            <TextView
+                android:id="@+id/cloud_note_body_item"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Note body" />
+
+            <TextView
+                android:id="@+id/note_date_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="date"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2">
+
+            <Button
+                android:id="@+id/upload_btn_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:textSize="10sp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/delete_note_item"
+                android:layout_weight="1"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="delete" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

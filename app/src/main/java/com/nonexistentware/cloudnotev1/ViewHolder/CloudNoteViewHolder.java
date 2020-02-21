@@ -26,7 +26,7 @@ public class CloudNoteViewHolder extends RecyclerView.ViewHolder implements View
 
         this.noteTitle = itemView.findViewById(R.id.cloud_note_title_item);
         this.noteBody = itemView.findViewById(R.id.cloud_note_body_item);
-        this.noteImage = itemView.findViewById(R.id.cloud__note_image_item);
+        this.noteImage = itemView.findViewById(R.id.cloud_note_image_item);
 
         itemView.setOnClickListener(this);
     }

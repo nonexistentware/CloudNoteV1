@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.nonexistentware.cloudnotev1.Common.Common;
 import com.nonexistentware.cloudnotev1.R;
 import com.squareup.picasso.Picasso;
@@ -31,6 +33,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseStorage firebaseStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,29 @@ public class UserProfileActivity extends AppCompatActivity {
         removeUserData = findViewById(R.id.user_remove_data); //remove only user data, not account
         removeAccountData = findViewById(R.id.user_remove_accountdata); //remove account and user data
 
-
-
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = firebaseDatabase.getReference(Common.STR_USERS);
+
+        removeAccountData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseStorage.getReference("users_photos/").child(currentUser.getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "removed", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+//                firebaseDatabase.getReference("Users").child(currentUser.getUid()).child("email").removeValue()
+
+            }
+        });
+
 
         loadUserData();
 
