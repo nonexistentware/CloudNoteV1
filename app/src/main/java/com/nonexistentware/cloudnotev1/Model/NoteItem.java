@@ -2,6 +2,7 @@ package com.nonexistentware.cloudnotev1.Model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "notes")
@@ -13,23 +14,21 @@ public class NoteItem {
     @ColumnInfo(name = "note_body")
     public String noteBody;
 
-    public String noteImage;
-
     @ColumnInfo(name = "note_title")
     public String noteTitle;
 
     @ColumnInfo(name = "note_date")
     public long noteDate;
 
+    @Ignore
     public boolean checked = false;
 
     public NoteItem() {
 
     }
 
-    public NoteItem(String noteBody, String noteImage, String noteTitle, long noteDate) {
+    public NoteItem(String noteBody, String noteTitle, long noteDate) {
         this.noteBody = noteBody;
-        this.noteImage = noteImage;
         this.noteTitle = noteTitle;
         this.noteDate = noteDate;
     }
@@ -40,14 +39,6 @@ public class NoteItem {
 
     public void setNoteBody(String noteBody) {
         this.noteBody = noteBody;
-    }
-
-    public String getNoteImage() {
-        return noteImage;
-    }
-
-    public void setNoteImage(String noteImage) {
-        this.noteImage = noteImage;
     }
 
     public String getNoteTitle() {

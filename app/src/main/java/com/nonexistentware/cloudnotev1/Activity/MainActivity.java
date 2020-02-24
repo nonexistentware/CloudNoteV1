@@ -22,7 +22,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nonexistentware.cloudnotev1.Fragment.CloudNoteFragment;
-import com.nonexistentware.cloudnotev1.Fragment.DashboardFragment;
+import com.nonexistentware.cloudnotev1.Fragment.MainNoteFragment;
 import com.nonexistentware.cloudnotev1.R;
 import com.squareup.picasso.Picasso;
 
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main,
-                    new DashboardFragment()).commit();
+                    new MainNoteFragment()).commit();
         }
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 switch (item.getItemId()) {
                     case R.id.dashboard_menu:
-                        fragment = new DashboardFragment();
+                        fragment = new MainNoteFragment();
                         break;
                     case R.id.cloud_menu:
                         fragment = new CloudNoteFragment();
@@ -147,5 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .into(navUserImage);
         }
     }
+
+
 }
 
