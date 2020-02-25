@@ -19,7 +19,18 @@
 
 <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:background="@android:color/white"
+        android:layout_width="fill_parent"
+        android:layout_height="?actionBarSize" />
+
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/main_toolbar"
         android:id="@+id/dashboard_fragment_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -50,6 +61,6 @@
 
     </RelativeLayout>
 
-
+    </RelativeLayout>
 
 </FrameLayout>

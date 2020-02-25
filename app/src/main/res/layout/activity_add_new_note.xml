@@ -45,16 +45,6 @@
         android:layout_marginRight="10dp"
         android:src="@drawable/ic_add_circle_outline_black_24dp"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/delete_fab_note_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="70dp"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_add_circle_outline_black_24dp"/>
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

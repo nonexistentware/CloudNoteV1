@@ -34,7 +34,7 @@ public class NewNote extends AppCompatActivity {
         noteBody = findViewById(R.id.body_note_new_activity);
 
         fab = findViewById(R.id.new_fab_note_btn);
-        removeFab = findViewById(R.id.delete_fab_note_btn);
+//        removeFab = findViewById(R.id.delete_fab_note_btn);
 
         noteTitle.addTextChangedListener(new TextWatcher() {
             @Override
