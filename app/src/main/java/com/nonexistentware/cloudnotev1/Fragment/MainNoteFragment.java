@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,8 @@ import com.nonexistentware.cloudnotev1.R;
 
 import java.util.List;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 
 public class MainNoteFragment extends Fragment {
 
@@ -32,6 +35,9 @@ public class MainNoteFragment extends Fragment {
     private NoteDataBase noteDataBase;
     private FloatingActionButton fab;
 
+    private Button removeBtn, uploadBtn;
+    long id;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
@@ -40,6 +46,15 @@ public class MainNoteFragment extends Fragment {
 
 
         fab = itemView.findViewById(R.id.fab_new_note_activity);
+
+        removeBtn = itemView.findViewById(R.id.delete_note_item);
+        uploadBtn = itemView.findViewById(R.id.upload_btn_item);
+
+//        Intent i = getActivity().getIntent();
+//        id = i.getLongExtra("ID", 0);
+//        NoteDataBase ndb = new NoteDataBase(getActivity().getApplicationContext());
+//        NoteItem note = ndb.getNote(id);
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +72,7 @@ public class MainNoteFragment extends Fragment {
             noItemText.setVisibility(View.VISIBLE);
         } else {
             noItemText.setVisibility(View.INVISIBLE);
+            displayList(allNotes);
 
         }
 

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,13 +27,13 @@ import com.nonexistentware.cloudnotev1.Fragment.MainNoteFragment;
 import com.nonexistentware.cloudnotev1.R;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth auth;
     FirebaseUser currentUser;
 
-    private static final int PReqCode = 2 ;
-    private static final int REQUESCODE = 2 ;
+    private static final int PReqCode = 2;
+    private static final int REQUESCODE = 2;
 
     private Uri pickedImgUri = null;
 
@@ -42,10 +43,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Toolbar toolbar;
 
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
 //        setSupportActionBar(toolbar);
@@ -152,6 +158,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(getBaseContext(), "Click two times to close an activity", Toast.LENGTH_SHORT).show(); }
+        mBackPressed = System.currentTimeMillis();
+    }
 }
 

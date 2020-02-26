@@ -20,7 +20,7 @@ import java.util.Calendar;
 public class NewNote extends AppCompatActivity {
 
     private EditText noteTitle, noteBody;
-    private FloatingActionButton fab, removeFab;
+    private FloatingActionButton fab;
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
@@ -62,12 +62,6 @@ public class NewNote extends AppCompatActivity {
             }
         });
 
-        removeFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         calendar = Calendar.getInstance();
         todayDate = calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
