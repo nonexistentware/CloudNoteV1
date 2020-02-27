@@ -24,8 +24,6 @@ import com.nonexistentware.cloudnotev1.R;
 
 import java.util.List;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
-
 
 public class MainNoteFragment extends Fragment {
 
@@ -50,10 +48,8 @@ public class MainNoteFragment extends Fragment {
         removeBtn = itemView.findViewById(R.id.delete_note_item);
         uploadBtn = itemView.findViewById(R.id.upload_btn_item);
 
-//        Intent i = getActivity().getIntent();
-//        id = i.getLongExtra("ID", 0);
-//        NoteDataBase ndb = new NoteDataBase(getActivity().getApplicationContext());
-//        NoteItem note = ndb.getNote(id);
+        Intent i = getActivity().getIntent();
+        id = i.getLongExtra("ID", 0);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +82,8 @@ public class MainNoteFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +97,7 @@ public class MainNoteFragment extends Fragment {
         if (getAllNotes.isEmpty()) {
             noItemText.setVisibility(View.VISIBLE);
         } else {
-            noItemText.setVisibility(View.INVISIBLE);
+            noItemText.setVisibility(View.GONE);
             displayList(getAllNotes);
         }
     }
