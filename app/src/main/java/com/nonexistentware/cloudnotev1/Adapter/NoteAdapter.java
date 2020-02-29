@@ -111,5 +111,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                 removeBtn.setVisibility(View.VISIBLE);
             }
         }
+
+
     }
 }
