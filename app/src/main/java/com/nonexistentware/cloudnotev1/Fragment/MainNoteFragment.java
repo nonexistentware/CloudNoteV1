@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,10 +23,11 @@ import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainNoteFragment extends Fragment {
+public class MainNoteFragment extends Fragment{
 
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
@@ -33,7 +35,9 @@ public class MainNoteFragment extends Fragment {
     private NoteDataBase noteDataBase;
     private FloatingActionButton fab;
 
-    private Button removeBtn, uploadBtn;
+    private List<NoteItem> noteList = new ArrayList<>();
+
+    public Button removeBtn, uploadBtn;
     long id;
 
     @Nullable
@@ -41,7 +45,10 @@ public class MainNoteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_dashboard, parent, false);
-
+        recyclerView = itemView.findViewById(R.id.dashboard_fragment_recycler);
+        recyclerView.setHasFixedSize(true);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         fab = itemView.findViewById(R.id.fab_new_note_activity);
 
@@ -51,6 +58,8 @@ public class MainNoteFragment extends Fragment {
         Intent i = getActivity().getIntent();
         id = i.getLongExtra("ID", 0);
 
+        adapter = new NoteAdapter(getContext(), noteList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

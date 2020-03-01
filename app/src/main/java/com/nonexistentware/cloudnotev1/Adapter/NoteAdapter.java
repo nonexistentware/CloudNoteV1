@@ -33,10 +33,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @NonNull
     @Override
     public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.note_item_layout, parent, false);
-
-
-        return new NoteViewHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.note_item_layout, parent, false);
+        return new NoteViewHolder(itemView);
     }
 
     @Override
@@ -67,6 +66,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         private NoteDataBase ndb;
 
+        long id;
 
         public NoteViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -80,13 +80,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             noteDate = itemView.findViewById(R.id.note_date_item);
             noteTime = itemView.findViewById(R.id.note_time_item);
 
-            noteId = itemView.findViewById(R.id.listId);
-
             removeBtn.setVisibility(View.INVISIBLE);
+            uploadBtn.setVisibility(View.INVISIBLE);
+
+            noteId = itemView.findViewById(R.id.listId);
 
             ndb = new NoteDataBase(itemView.getContext());
 
-            checkDbRecords();
+//            checkDbRecords();
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,11 +108,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         }
 
         private void checkDbRecords() {
-            if (ndb.getMemoCount() > 0) {
+            if (ndb.getMemoCount() >= 0 ) {
                 removeBtn.setVisibility(View.VISIBLE);
             }
         }
-
 
     }
 }

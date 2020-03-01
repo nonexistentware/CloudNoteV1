@@ -5,14 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.CloudNoteFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cloud_note_recycler"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="adsasf"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_toolbar"
+        android:background="@android:color/white"
+        android:layout_width="fill_parent"
+        android:layout_height="?actionBarSize" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/main_toolbar"
+        android:id="@+id/cloud_note_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
 
 </FrameLayout>

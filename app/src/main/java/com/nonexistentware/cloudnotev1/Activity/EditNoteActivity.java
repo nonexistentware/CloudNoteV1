@@ -16,23 +16,41 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class EditNoteActivity extends AppCompatActivity {
 
-    private EditText notetitle, noteBody;
-    private FloatingActionButton fab, fabRemove;
+    private EditText noteTitle, noteBody;
+    private TextView saveBtn, uploadBtn, deleteBtn;
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
     long nid;
+
+    private FirebaseAuth auth;
+    private DatabaseReference noteReference;
+    private String noteId;
+    private boolean isExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +59,24 @@ public class EditNoteActivity extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar_edit_activity);
 //        setSupportActionBar(toolbar);
 
-        notetitle = findViewById(R.id.title_note_edit_activity);
+        try {
+            noteId = getIntent().getStringExtra("noteId");
+
+            if (!noteId.trim().equals("")) {
+                isExist = true;
+            } else {
+                isExist = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        noteTitle = findViewById(R.id.title_note_edit_activity);
         noteBody = findViewById(R.id.body_note_edit_activity);
-        fab = findViewById(R.id.fab_editnote_btn_save);
-        fabRemove = findViewById(R.id.fab_editnote_btn_delete);
+        saveBtn = findViewById(R.id.editnote_btn_save);
+        uploadBtn = findViewById(R.id.editnote_btn_upload);
+        deleteBtn = findViewById(R.id.editnote_btn_delete);
 
         Intent i = getIntent();
         nid = i.getLongExtra("ID", 0);
@@ -54,7 +86,11 @@ public class EditNoteActivity extends AppCompatActivity {
         final String title = note.getNoteTitle();
         String body = note.getNoteBody();
 
-        notetitle.setText(title);
+
+        auth = FirebaseAuth.getInstance();
+        noteReference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
+
+        noteTitle.setText(title);
         noteBody.setText(body);
 
         calendar = Calendar.getInstance();
@@ -64,10 +100,10 @@ public class EditNoteActivity extends AppCompatActivity {
         Log.d("TIME", "Time: " + currentTime);
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NoteItem note = new NoteItem(nid, notetitle.getText().toString(),
+                NoteItem note = new NoteItem(nid, noteTitle.getText().toString(),
                         noteBody.getText().toString(), todayDate, currentTime);
                 NoteDataBase ndb = new NoteDataBase(getApplicationContext());
                 long id = ndb.editNote(note);
@@ -75,19 +111,94 @@ public class EditNoteActivity extends AppCompatActivity {
             }
         });
 
-        fabRemove.setOnClickListener(new View.OnClickListener() {
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                deleteNote();
             }
         });
 
-        fab.setVisibility(View.INVISIBLE);
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title = noteTitle.getText().toString().trim();
+                String body = noteBody.getText().toString().trim();
+
+                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+                    uploadNote(title, body);
+                } else {
+                    Snackbar.make(v, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        putData();
+
+        saveBtn.setVisibility(View.INVISIBLE);
 
         titleChange(); //show save button
         bodyChange(); //show save button
 
     }
+
+    public void putData() {
+        if (isExist) {
+            noteReference.child(noteId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("body")) {
+                        String title = dataSnapshot.child("title").getValue().toString();
+                        String body = dataSnapshot.child("body").getValue().toString();
+
+                        noteTitle.setText(title);
+                        noteBody.setText(body);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public void uploadNote(String title, String body) {
+        if (auth.getCurrentUser() != null) {
+//            if (isExist) {
+//                Map updateMap = new HashMap();
+//                updateMap.put("title", noteTitle.getText().toString().trim());
+//                updateMap.put("body", noteTitle.getText().toString().trim());
+//                updateMap.put("timestamp", ServerValue.TIMESTAMP);
+//
+//                noteReference.child(noteId).updateChildren(updateMap);
+
+                final DatabaseReference reference = noteReference.push();
+
+                final Map noteMap = new HashMap();
+                noteMap.put("title", title);
+                noteMap.put("body", body);
+                noteMap.put("timestamp", ServerValue.TIMESTAMP);
+
+                Thread mainThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reference.setValue(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
+                mainThread.start();
+            }
+        }
+
 
     private String pad(int time) {
         if (time < 10)
@@ -141,7 +252,7 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     private void titleChange() { //show save button
-        notetitle.addTextChangedListener(new TextWatcher() {
+        noteTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -149,7 +260,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fab.setVisibility(View.VISIBLE);
+                saveBtn.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -168,7 +279,7 @@ public class EditNoteActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fab.setVisibility(View.VISIBLE);
+                saveBtn.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -181,7 +292,7 @@ public class EditNoteActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-        String note = notetitle.getText().toString();
+        String note = noteTitle.getText().toString();
         String body = noteBody.getText().toString();
 
         if (!TextUtils.isEmpty(note)) {
