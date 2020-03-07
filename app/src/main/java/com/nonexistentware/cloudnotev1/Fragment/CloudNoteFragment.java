@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nonexistentware.cloudnotev1.Activity.EditCloudActivity;
 import com.nonexistentware.cloudnotev1.Activity.MainActivity;
 import com.nonexistentware.cloudnotev1.Interface.ItemClickListener;
 import com.nonexistentware.cloudnotev1.TimeUtil.GetTimeAgo;
@@ -30,13 +33,17 @@ import com.nonexistentware.cloudnotev1.R;
 import com.nonexistentware.cloudnotev1.ViewHolder.CloudNoteViewHolder;
 
 
-public class CloudNoteFragment extends Fragment {
+public class CloudNoteFragment extends Fragment{
 
     private FirebaseAuth auth;
+    private FirebaseDatabase database;
+    private FirebaseUser currentUser;
     private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
-
+    public ImageView removeBtn;
     private DatabaseReference reference;
+
+    FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> adapter;
 
     @Nullable
     @Override
@@ -50,8 +57,12 @@ public class CloudNoteFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
         if (auth.getCurrentUser() != null) {
-            reference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
+//            reference = database.getReference().child(Common.STR_CLOUD_NOTE).child(auth.getCurrentUser().getUid());
+            reference = FirebaseDatabase.getInstance().getReference()
+                    .child("CloudNote").child(auth.getCurrentUser().getUid());
         }
 
         updateUI();
@@ -61,9 +72,9 @@ public class CloudNoteFragment extends Fragment {
         return itemView;
     }
 
-    private void loadDate() {
+    public void loadDate() {
         Query query = reference.orderByValue();
-        FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(
+         adapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(
           NoteItem.class,
           R.layout.cloud_layout_note_item,
           CloudNoteViewHolder.class,
@@ -89,12 +100,13 @@ public class CloudNoteFragment extends Fragment {
                             viewHolder.setItemClickListener(new ItemClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    //
+                                    Intent intent = new Intent(getContext(), EditCloudActivity.class);
+                                    intent.putExtra("noteId", noteId);
+                                    startActivity(intent);
                                 }
                             });
-
-
                         }
+
                     }
 
                     @Override
@@ -104,7 +116,7 @@ public class CloudNoteFragment extends Fragment {
                 });
             }
         };
-        recyclerView.setAdapter(firebaseRecyclerAdapter);
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -117,4 +129,19 @@ public class CloudNoteFragment extends Fragment {
             Log.i("MainActivity", "fAuth == null");
         }
         }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (adapter != null)
+            adapter.startListening();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null)
+            adapter.startListening();
+    }
+
+}

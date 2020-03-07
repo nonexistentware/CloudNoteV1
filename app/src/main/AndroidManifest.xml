@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.ShowNotesActivity"></activity>
-        <activity android:name=".Activity.EditNoteActivity"/>
+        <activity android:name=".Activity.EditCloudActivity"></activity>
+        <activity android:name=".Activity.ShowNotesActivity" />
+        <activity android:name=".Activity.EditNoteActivity" />
         <activity android:name=".Activity.NewCloudNote" />
         <activity android:name=".Activity.NewNote" />
         <activity android:name=".Activity.UserProfileActivity" />

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nonexistentware.cloudnotev1.Activity.EditNoteActivity;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
+import com.nonexistentware.cloudnotev1.Interface.ItemClickListener;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 
@@ -58,7 +59,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return notes.size();
     }
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder{
+    public class NoteViewHolder extends RecyclerView.ViewHolder implements ItemClickListener {
 
 
         TextView noteTitle, noteBody, noteDate, noteTime, noteId;
@@ -87,6 +88,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
             ndb = new NoteDataBase(itemView.getContext());
 
+
 //            checkDbRecords();
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -113,5 +115,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
         }
 
+        @Override
+        public void onClick(View view, int position) {
+
+        }
     }
 }
