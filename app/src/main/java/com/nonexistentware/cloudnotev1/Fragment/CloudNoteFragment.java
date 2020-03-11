@@ -24,10 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nonexistentware.cloudnotev1.Activity.EditCloudActivity;
+import com.nonexistentware.cloudnotev1.Activity.EditCloudNoteActivity;
 import com.nonexistentware.cloudnotev1.Activity.MainActivity;
-import com.nonexistentware.cloudnotev1.Interface.ItemClickListener;
 import com.nonexistentware.cloudnotev1.TimeUtil.GetTimeAgo;
+import com.nonexistentware.cloudnotev1.Interface.ItemClickListener;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 import com.nonexistentware.cloudnotev1.ViewHolder.CloudNoteViewHolder;
@@ -91,20 +91,21 @@ public class CloudNoteFragment extends Fragment{
                             String title = dataSnapshot.child("title").getValue().toString();
                             String timestamp = dataSnapshot.child("timestamp").getValue().toString();
 
-                            viewHolder.setCloudNoteTitle(title);
+                            viewHolder.setNoteTitle(title);
 
                             GetTimeAgo getTimeAgo = new GetTimeAgo();
-                            viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
+                            viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
 
                             //make clickable
                             viewHolder.setItemClickListener(new ItemClickListener() {
                                 @Override
                                 public void onClick(View view, int position) {
-                                    Intent intent = new Intent(getContext(), EditCloudActivity.class);
+                                    Intent intent = new Intent(getContext(), EditCloudNoteActivity.class);
                                     intent.putExtra("noteId", noteId);
                                     startActivity(intent);
                                 }
                             });
+
                         }
 
                     }
