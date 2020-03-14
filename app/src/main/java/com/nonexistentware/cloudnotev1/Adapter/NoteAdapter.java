@@ -63,8 +63,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
 
         TextView noteTitle, noteBody, noteDate, noteTime, noteId;
-        Button uploadBtn, removeBtn;
-
         private NoteDataBase ndb;
 
         long id;
@@ -75,14 +73,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             noteTitle = itemView.findViewById(R.id.cloud_note_title_item);
             noteBody = itemView.findViewById(R.id.cloud_note_body_item);
 
-            uploadBtn = itemView.findViewById(R.id.upload_btn_item);
-            removeBtn = itemView.findViewById(R.id.delete_note_item);
-
             noteDate = itemView.findViewById(R.id.note_date_item);
             noteTime = itemView.findViewById(R.id.note_time_item);
-
-            removeBtn.setVisibility(View.INVISIBLE);
-            uploadBtn.setVisibility(View.INVISIBLE);
 
             noteId = itemView.findViewById(R.id.listId);
 
@@ -99,20 +91,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
                     v.getContext().startActivity(i);
                 }
             });
-
-            removeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(), "Work", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        }
-
-        private void checkDbRecords() {
-            if (ndb.getMemoCount() >= 0 ) {
-                removeBtn.setVisibility(View.VISIBLE);
-            }
         }
 
         @Override

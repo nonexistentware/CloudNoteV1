@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -41,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView userImg;
     private TextView createUserBtn, toLogin;
     private EditText userMail, userPass;
+
+    private ProgressDialog progressDialog;
 
     Uri pickedImageUri;
 
@@ -105,15 +108,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createNewUser(final String mail, String pass) {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Processing your request, please wait...");
+        progressDialog.show();
+
         auth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+                            progressDialog.dismiss();
+
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             updateUserInfo(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }

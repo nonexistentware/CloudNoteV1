@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Database;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -178,6 +179,11 @@ public class NewNote extends AppCompatActivity {
 
 
     public void saveNewNote() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading note...");
+        progressDialog.show();
+
+
         if (noteTitle.getText().length() != 0) {
             NoteItem note = new NoteItem(noteTitle.getText().toString(),
                     noteBody.getText().toString(), todayDate, currentTime);
@@ -187,8 +193,10 @@ public class NewNote extends AppCompatActivity {
             Log.d("inserted", "Note: " + id + " -> Title:" + check.getNoteTitle() + " Date: " + check.getDate());
             onBackPressed();
 
+            progressDialog.dismiss();
             Toast.makeText(this, "Note Saved.", Toast.LENGTH_SHORT).show();
         } else {
+            progressDialog.dismiss();
             noteTitle.setError("Title Can not be Blank.");
         }
 

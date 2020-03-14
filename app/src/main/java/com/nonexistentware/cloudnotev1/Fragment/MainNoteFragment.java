@@ -36,8 +36,6 @@ public class MainNoteFragment extends Fragment{
     private FloatingActionButton fab;
 
     private List<NoteItem> noteList = new ArrayList<>();
-
-    public Button removeBtn, uploadBtn;
     long id;
 
     @Nullable
@@ -51,9 +49,6 @@ public class MainNoteFragment extends Fragment{
         recyclerView.setLayoutManager(gridLayoutManager);
 
         fab = itemView.findViewById(R.id.fab_new_note_activity);
-
-        removeBtn = itemView.findViewById(R.id.delete_note_item);
-        uploadBtn = itemView.findViewById(R.id.upload_btn_item);
 
         Intent i = getActivity().getIntent();
         id = i.getLongExtra("ID", 0);
