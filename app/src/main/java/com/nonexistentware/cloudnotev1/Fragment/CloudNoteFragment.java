@@ -91,10 +91,10 @@ public class CloudNoteFragment extends Fragment{
                             String title = dataSnapshot.child("title").getValue().toString();
                             String timestamp = dataSnapshot.child("timestamp").getValue().toString();
 
-                            viewHolder.setNoteTitle(title);
+                            viewHolder.setCloudNoteTitle(title);
 
                             GetTimeAgo getTimeAgo = new GetTimeAgo();
-                            viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
+                            viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
 
                             //make clickable
                             viewHolder.setItemClickListener(new ItemClickListener() {

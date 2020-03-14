@@ -3,10 +3,7 @@ package com.nonexistentware.cloudnotev1.TimeUtil;
 import android.content.Context;
 
 public class GetTimeAgo {
-<<<<<<< HEAD
 
-=======
->>>>>>> 9e6995f04015233c601c2e7f4a7c771d3320f7f9
     private static final int SECOND_MILLIS = 1000;
     private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
     private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
@@ -49,8 +46,4 @@ public class GetTimeAgo {
         }
 
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 9e6995f04015233c601c2e7f4a7c771d3320f7f9
 }
