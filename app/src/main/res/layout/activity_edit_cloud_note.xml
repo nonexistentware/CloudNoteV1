@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.EditCloudNoteActivity">
+
+    <LinearLayout
+        android:id="@+id/layTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/title_cloud_note_edit_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:ems="10"
+            android:hint="Edit note title"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/edit_cloud_note_save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="Save"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:gravity="right"
+            android:layout_weight="1"
+            android:id="@+id/edit_cloud_note_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="Delete"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layBottom"
+        android:layout_below="@+id/layTop"
+        android:layout_centerInParent="true">
+
+        <EditText
+            android:id="@+id/body_cloud_note_edit_activity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:ems="10"
+            android:hint="Edit note body"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -42,13 +42,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder viewHolder, int i) {
         String title = notes.get(i).getNoteTitle().trim();
-//        String body = notes.get(i).getNoteBody();
+        String body = notes.get(i).getNoteBody().trim();
         String date = notes.get(i).getDate();
         String time = notes.get(i).getTime();
         long id = notes.get(i).getId();
         Log.d("date on", "Date on: " + date);
 
         viewHolder.noteTitle.setText(title);
+        viewHolder.noteBody.setText(body);
         viewHolder.noteDate.setText(date);
         viewHolder.noteTime.setText(time);
         viewHolder.noteId.setText(String.valueOf(notes.get(i).getId()));
