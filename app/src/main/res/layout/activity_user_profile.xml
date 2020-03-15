@@ -25,33 +25,43 @@
         android:layout_width="fill_parent"
         android:id="@+id/user_profile_mail"
         android:text="User email"
+        android:textSize="17sp"
         android:gravity="center"
         android:textColor="@android:color/black"/>
 
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:id="@+id/user_remove_account"
-        android:text="Delete account"
-        android:gravity="center"
-        android:textColor="@android:color/black"/>
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
 
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:id="@+id/user_remove_data"
-            android:text="Delete data"
-            android:textColor="@android:color/black"
-            android:gravity="center"/>
+            android:id="@+id/user_remove_account"
+            android:text="Delete account"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_light"/>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:id="@+id/user_remove_accountdata"
-            android:text="Delete account and data"
-            android:textColor="@android:color/black"
-            android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/user_remove_data"
+                android:text="Delete data"
+                android:textColor="@android:color/holo_red_light"
+                android:gravity="center" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/user_remove_accountdata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Delete account and data"
+                android:textColor="@android:color/holo_red_light" />
 
-</LinearLayout>
+    </LinearLayout>
+
+    </LinearLayout>

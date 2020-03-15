@@ -1,49 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.RegisterActivity"
-    android:orientation="vertical">
+    tools:context=".Activity.RegisterActivity">
 
-    <LinearLayout android:gravity="center"
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:gravity="center">
 
-        <ImageView android:id="@+id/user_image_reg"
+        <ImageView
+            android:id="@+id/user_image_reg"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/ic_account_circle_black_24dp" />
 
-        <EditText android:textColorHint="@android:color/black"
+        <EditText
+            android:textColorHint="@android:color/darker_gray"
             android:id="@+id/user_email_reg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your email"
+            android:hint="Email"
             android:inputType="textEmailAddress" />
 
-        <EditText android:textColorHint="@android:color/black"
+        <EditText
+            android:textColorHint="@android:color/darker_gray"
             android:id="@+id/user_pass_reg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter pass"
+            android:hint="Password"
             android:inputType="textPassword" />
 
-        <TextView android:textColor="@android:color/black"
+        <TextView
+            android:textColor="@android:color/black"
             android:id="@+id/user_reg_btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Register new user" />
+            android:gravity="center"
+            android:text="Register" />
 
-        <TextView android:textColor="@android:color/black"
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:gravity="center"
+            android:textColor="@android:color/black"
             android:id="@+id/to_login_screen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Already have account" />
+            android:text="Already have an account" />
+
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

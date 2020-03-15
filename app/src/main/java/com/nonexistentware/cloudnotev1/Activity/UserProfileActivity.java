@@ -48,29 +48,14 @@ public class UserProfileActivity extends AppCompatActivity {
         removeUserData = findViewById(R.id.user_remove_data); //remove only user data, not account
         removeAccountData = findViewById(R.id.user_remove_accountdata); //remove account and user data
 
+        removeAccountData.setVisibility(View.INVISIBLE);
+
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
                 .child(auth.getCurrentUser().getUid());
-
-        removeAccountData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseStorage.getReference("users_photos/").child(currentUser.getUid()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "removed", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-//                firebaseDatabase.getReference("Users").child(currentUser.getUid()).child("email").removeValue()
-
-            }
-        });
 
 
         loadUserData();
@@ -80,8 +65,8 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
-                dialog.setTitle("Do you really want to remove your account");
-                dialog.setMessage("Your data won't be wiped from cloud");
+                dialog.setTitle("Do you really want to remove your account?");
+                dialog.setMessage("We only delete email. Your data won't be wiped from cloud");
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -118,7 +103,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
-                dialog.setTitle("Do you really want to remove your data");
+                dialog.setTitle("Do you really want to remove your data?");
                 dialog.setMessage("This process will remove notes from cloud");
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -144,6 +129,28 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
+            }
+        });
+
+        removeAccountData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
+                dialog.setTitle("111");
+                dialog.setMessage("111");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Account removed successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Account removed successfully", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

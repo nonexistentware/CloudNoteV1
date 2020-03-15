@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.user_login_btn);
         forgotPassBtn = findViewById(R.id.user_forgot_btn);
 
+        forgotPassBtn.setVisibility(View.INVISIBLE);
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
