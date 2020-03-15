@@ -52,7 +52,8 @@ public class UserProfileActivity extends AppCompatActivity {
         currentUser = auth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-        databaseReference = firebaseDatabase.getReference(Common.STR_USERS);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
+                .child(auth.getCurrentUser().getUid());
 
         removeAccountData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,8 +123,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        firebaseDatabase.getReference("Users").child(currentUser.getUid())
-                                .child("email").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {

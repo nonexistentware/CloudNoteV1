@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,16 +20,21 @@
 
                 <TextView
                     android:id="@+id/cloud_note_title_view"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="title"
+                    android:text="Cloud note title"
+                    android:textSize="17sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"/>
 
                 <TextView
                     android:id="@+id/cloud_note_time"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="body"
+                    android:text="Note body"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textColor="@android:color/black"/>
 
             </LinearLayout>
@@ -40,29 +46,8 @@
                 android:layout_weight="7"
                 android:layout_gravity="center"
                 android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/cloud_note_remove_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_delete_black_24dp"/>
-
-
             </LinearLayout>
 
-
         </LinearLayout>
-
-    <TextView
-        android:id="@+id/cloud_note_title_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"/>
-
-    <TextView
-        android:id="@+id/cloud_note_time_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black"/>
 
 </LinearLayout>

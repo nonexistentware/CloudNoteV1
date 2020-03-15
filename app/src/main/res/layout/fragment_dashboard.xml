@@ -60,7 +60,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="70dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/ic_add_circle_outline_black_24dp"/>
+                android:src="@drawable/addicon"
+                android:backgroundTint="@android:color/black"
+                android:tint="@android:color/white"/>
 
         </RelativeLayout>
 

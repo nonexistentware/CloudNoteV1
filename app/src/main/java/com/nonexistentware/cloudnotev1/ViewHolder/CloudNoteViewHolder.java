@@ -40,9 +40,6 @@ public class CloudNoteViewHolder extends RecyclerView.ViewHolder implements View
 
         cloudNoteTitle = itemView.findViewById(R.id.cloud_note_title_view);
         cloudNoteTime = itemView.findViewById(R.id.cloud_note_time);
-        removeBtn = itemView.findViewById(R.id.cloud_note_remove_btn);
-
-        removeBtn.setVisibility(View.INVISIBLE);
 
         itemView.setOnClickListener(this);
 

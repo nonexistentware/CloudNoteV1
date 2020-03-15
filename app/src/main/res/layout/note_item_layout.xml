@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="3.0">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/cloud_note_image_item"
@@ -26,28 +25,20 @@
                 android:id="@+id/cloud_note_title_item"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Cloud note title" />
+                android:text="Cloud note title"
+                android:textSize="17sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/cloud_note_body_item"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Note body" />
-
-            <TextView
-                android:id="@+id/note_date_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="date"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/note_time_item"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="time"
-                android:gravity="center"/>
-
+                android:text="Note body"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/listId"
@@ -64,29 +55,31 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="2">
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/upload_btn_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Upload"
-                android:textSize="10sp"
-                android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
 
-            <Button
-                android:id="@+id/delete_note_item"
-                android:layout_weight="1"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="delete" />
+        <TextView
+            android:id="@+id/note_date_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="date"
+            android:gravity="left"
+            android:layout_weight="4"
+            android:textColor="@android:color/black"/>
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/note_time_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="time"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:textColor="@android:color/black"/>
 
     </LinearLayout>
 

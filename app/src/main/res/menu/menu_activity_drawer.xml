@@ -16,10 +16,6 @@
         android:id="@+id/menu_drawable_user_profile"/>
 
     <item
-        android:title="Show notes"
-        android:id="@+id/menu_show_notes"/>
-
-    <item
         android:title="Sign Out"
         android:id="@+id/menu_drawer_signout"/>
 

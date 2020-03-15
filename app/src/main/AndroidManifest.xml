@@ -17,7 +17,6 @@
         <activity android:name=".Activity.EditCloudActivity" />
         <activity android:name=".Activity.ShowNotesActivity" />
         <activity android:name=".Activity.EditNoteActivity" />
-        <activity android:name=".Activity.NewCloudNote" />
         <activity android:name=".Activity.NewNote" />
         <activity android:name=".Activity.UserProfileActivity" />
         <activity android:name=".Activity.RegisterActivity" />
