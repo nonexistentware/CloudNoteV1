@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,6 +43,7 @@ public class CloudNoteFragment extends Fragment{
     private GridLayoutManager gridLayoutManager;
     public ImageView removeBtn;
     private DatabaseReference reference;
+    private TextView noCloudItemTxt;
 
     FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> adapter;
 
@@ -58,6 +60,8 @@ public class CloudNoteFragment extends Fragment{
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+
+        noCloudItemTxt = itemView.findViewById(R.id.noCloudItemText);
 
         if (auth.getCurrentUser() != null) {
 //            reference = database.getReference().child(Common.STR_CLOUD_NOTE).child(auth.getCurrentUser().getUid());
@@ -105,6 +109,12 @@ public class CloudNoteFragment extends Fragment{
                                     startActivity(intent);
                                 }
                             });
+
+                           if (dataSnapshot.child(noteId).getValue() == null) {
+                               noCloudItemTxt.setVisibility(View.VISIBLE);
+                           } else {
+                               noCloudItemTxt.setVisibility(View.VISIBLE);
+                           }
 
                         }
 

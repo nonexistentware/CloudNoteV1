@@ -34,10 +34,9 @@
             android:id="@+id/noItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='Empty ! Add New Notes using " + "'
+            android:text='List is empty. Add New notes using " + "'
             android:textColor="@color/colorAccent"
             android:textSize="18sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
