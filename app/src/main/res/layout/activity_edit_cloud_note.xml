@@ -22,12 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:ems="10"
-            android:hint="Edit note title"
+            android:hint="Title"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"
             android:paddingStart="12dp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:backgroundTint="@android:color/white"/>
 
     </LinearLayout>
 
@@ -81,12 +82,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="top"
             android:ems="10"
-            android:hint="Edit note body"
+            android:hint=""
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"
             android:paddingStart="12dp"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:backgroundTint="@android:color/white"/>
 
     </RelativeLayout>
 

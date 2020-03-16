@@ -3,21 +3,50 @@
     <item android:title="">
         <menu>
 
-    <item
-        android:title="Register"
-        android:id="@+id/menu_drawer_register"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:title="Register"
+            android:id="@+id/menu_drawer_register"/>
 
-    <item
-        android:title="Login"
-        android:id="@+id/menu_drawer_login"/>
+        <item
+            android:title="Login"
+            android:id="@+id/menu_drawer_login"/>
 
-    <item
-        android:title="User profile"
-        android:id="@+id/menu_drawable_user_profile"/>
+        <item
+            android:title="User profile"
+            android:id="@+id/menu_drawable_user_profile"/>
 
-    <item
-        android:title="Sign Out"
-        android:id="@+id/menu_drawer_signout"/>
+        <item
+            android:title=""
+            android:id="@+id/null_element1"/>
+        <item
+            android:title=""
+            android:id="@+id/null_element2"/>
+
+
+        <item
+            android:title=""
+            android:id="@+id/null_element3"/>
+        <item
+            android:title=""
+            android:id="@+id/null_element4"/>
+
+        <item
+            android:title=""
+            android:id="@+id/null_element5"/>
+        <item
+            android:title=""
+            android:id="@+id/null_element6"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:icon="@drawable/logout"
+            android:iconTint="@android:color/black"
+            android:title="Sign Out"
+            android:id="@+id/menu_drawer_signout"/>
+    </group>
+
 
 </menu>
 </item>
