@@ -109,12 +109,12 @@ public class CloudNoteFragment extends Fragment{
                                     startActivity(intent);
                                 }
                             });
-
-                           if (dataSnapshot.child(noteId).getValue() == null) {
-                               noCloudItemTxt.setVisibility(View.VISIBLE);
-                           } else {
-                               noCloudItemTxt.setVisibility(View.VISIBLE);
-                           }
+//
+//                           if (dataSnapshot.child(noteId).getValue() == null) {
+//                               noCloudItemTxt.setVisibility(View.INVISIBLE);
+//                           } else {
+//                               noCloudItemTxt.setVisibility(View.VISIBLE);
+//                           }
 
                         }
 

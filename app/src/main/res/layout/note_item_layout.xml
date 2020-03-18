@@ -70,7 +70,7 @@
             android:text="date"
             android:gravity="left"
             android:layout_weight="4"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/note_time_item"
@@ -79,7 +79,7 @@
             android:text="time"
             android:gravity="left"
             android:layout_weight="1"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/darker_gray"/>
 
     </LinearLayout>
 
