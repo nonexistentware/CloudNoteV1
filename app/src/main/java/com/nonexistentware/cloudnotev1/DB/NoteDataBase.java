@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
 
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
@@ -15,19 +16,22 @@ import java.util.List;
 
 public class NoteDataBase extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "NoteDB";
-    private static final String TABLE_NAME = "note_db";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "NoteDB.db";
+    public static final String TABLE_NAME = "note_db";
 
-    public NoteDataBase(Context context) {
+    private static String DATABASE_PATH;
+    private Context myContext;
+
+    public NoteDataBase(Context context) { //change context to my myContext
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private static final String KEY_ID = "id";
-    private static final String KEY_TITLE = "note_title";
-    private static final String KEY_BODY = "note_body";
-    private static final String KEY_DATE = "date";
-    private static final String KEY_TIME = "time";
+    public static final String KEY_ID = "id";
+    public static final String KEY_TITLE = "note_title";
+    public static final String KEY_BODY = "note_body";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_TIME = "time";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -98,6 +102,46 @@ public class NoteDataBase extends SQLiteOpenHelper {
         db.close();
         return allNotes;
 
+    }
+
+    //get all notes title
+    public List<String> getNote(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String[]  sqlSelect = {"note_title"};
+        String tableName = TABLE_NAME;
+
+        qb.setTables(tableName);
+        Cursor cursor = qb.query(db, sqlSelect, null, null, null, null, null);
+        List<String> result = new ArrayList<>();
+        if(cursor.moveToFirst()){
+            do{
+                result.add(cursor.getString(cursor.getColumnIndex("note_title")));
+            }while (cursor.moveToNext());
+        }
+        return result;
+    }
+
+    public List<NoteItem> getNoteByTitle() {
+        List<NoteItem> allNotes = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_NAME+" ORDER BY "+KEY_ID+" DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            do{
+                NoteItem note = new NoteItem();
+                note.setId(Long.parseLong(cursor.getString(0)));
+                note.setNoteTitle(cursor.getString(1));
+                note.setNoteBody(cursor.getString(2));
+                note.setDate(cursor.getString(3));
+                note.setTime(cursor.getString(4));
+                allNotes.add(note);
+            }while (cursor.moveToNext());
+        }
+
+        db.close();
+        return allNotes;
     }
 
     public int getMemoCount() {

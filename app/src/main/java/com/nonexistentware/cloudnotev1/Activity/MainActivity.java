@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -22,10 +24,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.nonexistentware.cloudnotev1.Adapter.NoteAdapter;
+import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
 import com.nonexistentware.cloudnotev1.Fragment.CloudNoteFragment;
 import com.nonexistentware.cloudnotev1.Fragment.MainNoteFragment;
+import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
