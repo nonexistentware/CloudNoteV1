@@ -16,8 +16,22 @@
         android:layout_width="fill_parent"
         android:layout_height="?actionBarSize" />
 
+        <EditText
+            android:layout_below="@+id/main_toolbar"
+            android:id="@+id/search_cloud_note"
+            android:hint="Search note title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cloud_note_recycler_search"
+            android:layout_below="@+id/search_cloud_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@+id/main_toolbar"
+        android:layout_below="@+id/search_cloud_note"
         android:id="@+id/cloud_note_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

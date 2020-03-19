@@ -65,7 +65,7 @@ public class MainNoteFragment extends Fragment{
         recyclerView.setHasFixedSize(true);
         materialSearchBar = itemView.findViewById(R.id.search_edit_text_fragment);
         dataBase = new NoteDataBase(getContext());
-        materialSearchBar.setHint("Search");
+        materialSearchBar.setHint("Enter note title");
         loadSuggestList();
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override

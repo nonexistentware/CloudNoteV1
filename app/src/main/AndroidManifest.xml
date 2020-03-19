@@ -13,15 +13,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.EditCloudNoteActivity"></activity>
-        <activity android:name=".Activity.EditCloudActivity" />
-        <activity android:name=".Activity.ShowNotesActivity" />
-        <activity android:name=".Activity.EditNoteActivity" />
-        <activity android:name=".Activity.NewNote" />
-        <activity android:name=".Activity.UserProfileActivity" />
-        <activity android:name=".Activity.RegisterActivity" />
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".Activity.EditCloudNoteActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".Activity.EditCloudActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.ShowNotesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.EditNoteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.NewNote"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.UserProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.RegisterActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

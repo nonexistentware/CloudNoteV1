@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -25,8 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.nonexistentware.cloudnotev1.Activity.EditCloudNoteActivity;
 import com.nonexistentware.cloudnotev1.Activity.MainActivity;
+import com.nonexistentware.cloudnotev1.Adapter.NoteAdapter;
 import com.nonexistentware.cloudnotev1.TimeUtil.GetTimeAgo;
 import com.nonexistentware.cloudnotev1.Interface.ItemClickListener;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
@@ -40,10 +44,13 @@ public class CloudNoteFragment extends Fragment{
     private FirebaseDatabase database;
     private FirebaseUser currentUser;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerView2;
+    private RecyclerView.LayoutManager layoutManager;
     private GridLayoutManager gridLayoutManager;
     public ImageView removeBtn;
     private DatabaseReference reference;
     private TextView noCloudItemTxt;
+    private EditText materialSearchBar;
 
     FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> adapter;
 
