@@ -90,8 +90,11 @@ public class MainNoteFragment extends Fragment{
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
             public void onSearchStateChanged(boolean enabled) {
-                if (!enabled)
+                if (!enabled) {
+                    adapter = new NoteAdapter(getActivity().getBaseContext(), dataBase.getAllNotes());
                     recyclerView.setAdapter(adapter);
+                }
+
             }
 
             @Override
