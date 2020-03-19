@@ -87,6 +87,26 @@ public class MainNoteFragment extends Fragment{
 
             }
         });
+        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
+            @Override
+            public void onSearchStateChanged(boolean enabled) {
+                if (!enabled)
+                    recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onSearchConfirmed(CharSequence text) {
+                startSearch(text.toString());
+            }
+
+            @Override
+            public void onButtonClicked(int buttonCode) {
+
+            }
+        });
+
+        adapter = new NoteAdapter(getContext(), dataBase.getAllNotes());
+        recyclerView.setAdapter(adapter);
 
         fab = itemView.findViewById(R.id.fab_new_note_activity);
 
@@ -117,8 +137,14 @@ public class MainNoteFragment extends Fragment{
         return itemView;
     }
 
+    //search section
+    private void startSearch(String text) {
+        adapter = new NoteAdapter(getContext(), dataBase.getNoteByTitle(text));
+        recyclerView.setAdapter(adapter);
+    }
+
     public void loadSuggestList() {
-        suggestList = dataBase.getNote();
+        suggestList = dataBase.getNotes();
         materialSearchBar.setLastSuggestions(suggestList);
     }
 

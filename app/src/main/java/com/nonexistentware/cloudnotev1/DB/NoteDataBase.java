@@ -81,7 +81,7 @@ public class NoteDataBase extends SQLiteOpenHelper {
                     cursor.getString(4));
 
         }
-
+        //get all notes
     public List<NoteItem> getAllNotes(){
         List<NoteItem> allNotes = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME+" ORDER BY "+KEY_ID+" DESC";
@@ -105,7 +105,7 @@ public class NoteDataBase extends SQLiteOpenHelper {
     }
 
     //get all notes title
-    public List<String> getNote(){
+    public List<String> getNotes(){
         SQLiteDatabase db = this.getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
@@ -123,11 +123,19 @@ public class NoteDataBase extends SQLiteOpenHelper {
         return result;
     }
 
-    public List<NoteItem> getNoteByTitle() {
-        List<NoteItem> allNotes = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_NAME+" ORDER BY "+KEY_ID+" DESC";
+    //get note's title
+    public List<NoteItem> getNoteByTitle(String title) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query,null);
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        String[] sqlSelect = {"id", "note_title", "note_body", "date", "time"};
+        String tableName = TABLE_NAME;
+
+        qb.setTables(tableName);
+        Cursor cursor = qb.query(db, sqlSelect, "note_title LIKE ?",
+                new String[]{"%"+title+"%"},
+                null, null, null, null, null);
+        List<NoteItem> result = new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
                 NoteItem note = new NoteItem();
@@ -136,12 +144,12 @@ public class NoteDataBase extends SQLiteOpenHelper {
                 note.setNoteBody(cursor.getString(2));
                 note.setDate(cursor.getString(3));
                 note.setTime(cursor.getString(4));
-                allNotes.add(note);
+                result.add(note);
             }while (cursor.moveToNext());
         }
 
         db.close();
-        return allNotes;
+        return result;
     }
 
     public int getMemoCount() {
