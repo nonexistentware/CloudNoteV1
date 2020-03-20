@@ -22,7 +22,7 @@ import java.util.List;
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
 
     private LayoutInflater inflater;
-    private List<NoteItem> notes;
+    public List<NoteItem> notes;
 
     public NoteAdapter(Context context, List<NoteItem> notes) {
         this.inflater = LayoutInflater.from(context);
