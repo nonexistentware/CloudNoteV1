@@ -22,6 +22,10 @@
             android:hint="Search note title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:minLines="1"
+            android:lines="1"
+            android:singleLine="true"
             android:backgroundTint="@android:color/white"/>
 
         <androidx.recyclerview.widget.RecyclerView
