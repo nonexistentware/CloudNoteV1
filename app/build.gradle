@@ -6,10 +6,10 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.nonexistentware.cloudnotev1"
-        minSdkVersion 23
+        minSdkVersion 25
         targetSdkVersion 29
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

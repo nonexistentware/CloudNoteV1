@@ -58,14 +58,15 @@ public class MainNoteFragment extends Fragment{
         recyclerView.setLayoutManager(gridLayoutManager);
 
         //search section
-        recyclerView2 = itemView.findViewById(R.id.recycler_search);
+//        recyclerView2 = itemView.findViewById(R.id.recycler_search);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         materialSearchBar = itemView.findViewById(R.id.search_edit_text_fragment);
         dataBase = new NoteDataBase(getContext());
         materialSearchBar.setHint("Enter note title");
-        loadSuggestList();
+        materialSearchBar.setTextHintColor(R.color.common_google_signin_btn_text_dark);
+//        loadSuggestList();
         materialSearchBar.addTextChangeListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -74,11 +75,11 @@ public class MainNoteFragment extends Fragment{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<String> suggest = new ArrayList<>();
-                for (String search:suggestList) {
-                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase()));
-                }
-                materialSearchBar.setLastSuggestions(suggest);
+//                List<String> suggest = new ArrayList<>();
+//                for (String search:suggestList) {
+//                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase()));
+//                }
+//                materialSearchBar.setLastSuggestions(suggest);
             }
 
             @Override
@@ -92,6 +93,7 @@ public class MainNoteFragment extends Fragment{
                 if (!enabled) {
                     adapter = new NoteAdapter(getActivity().getBaseContext(), dataBase.getAllNotes());
                     recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }
 
             }
@@ -106,6 +108,8 @@ public class MainNoteFragment extends Fragment{
 
             }
         });
+
+        materialSearchBar.setVisibility(View.INVISIBLE);
 
         adapter = new NoteAdapter(getContext(), dataBase.getAllNotes());
         recyclerView.setAdapter(adapter);

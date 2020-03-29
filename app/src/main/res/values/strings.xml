@@ -6,4 +6,7 @@
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>
+
+    <string name="newNote">New note</string>
+    <string name="newMemo">New memo</string>
 </resources>

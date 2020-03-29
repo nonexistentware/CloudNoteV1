@@ -1,0 +1,17 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="New note"
+        android:enabled="true"
+        android:icon="@drawable/addicon"
+        android:shortcutShortLabel="@string/newNote"
+        android:shortcutLongLabel="@string/newNote">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.nonexistentware.cloudnotev1"
+            android:targetClass="com.nonexistentware.cloudnotev1.Activity.NewNote" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

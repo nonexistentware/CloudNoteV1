@@ -41,7 +41,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:icon="@drawable/logout"
             android:iconTint="@android:color/black"
             android:title="Sign Out"
             android:id="@+id/menu_drawer_signout"/>

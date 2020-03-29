@@ -41,12 +41,6 @@ public class ShowNotesActivity extends AppCompatActivity {
 
         displayList(allNotes);
 
-//        if(allNotes.isEmpty()){
-//            noItemText.setVisibility(View.VISIBLE);
-//        }else {
-//            noItemText.setVisibility(View.GONE);
-//            displayList(allNotes);
-//        }
 
     }
 

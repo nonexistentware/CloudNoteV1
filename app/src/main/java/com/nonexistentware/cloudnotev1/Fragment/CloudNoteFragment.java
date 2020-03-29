@@ -36,6 +36,7 @@ import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 import com.nonexistentware.cloudnotev1.ViewHolder.CloudNoteViewHolder;
 
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 
@@ -104,6 +105,8 @@ public class CloudNoteFragment extends Fragment{
             reference = FirebaseDatabase.getInstance().getReference()
                     .child("CloudNote").child(auth.getCurrentUser().getUid());
         }
+
+        searchView.setVisibility(View.INVISIBLE);
 
         updateUI();
         loadDate();
