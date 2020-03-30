@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -45,20 +46,18 @@ public class CloudNoteFragment extends Fragment{
     private FirebaseAuth auth;
     private FirebaseDatabase database;
     private FirebaseUser currentUser;
-    public RecyclerView recyclerView;
-    private RecyclerView recyclerView2;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
-    public ImageView removeBtn;
     private DatabaseReference reference;
     private TextView noCloudItemTxt;
     private EditText materialSearchBar;
-    public ArrayList<NoteItem> notes;
+    private ArrayList<NoteItem> notes;
+
+    FirebaseRecyclerOptions<NoteItem> options;
+   public FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> adapter;
 
     //search
     EditText searchView;
-
-    FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder> adapter;
 
     @Nullable
     @Override
@@ -78,27 +77,27 @@ public class CloudNoteFragment extends Fragment{
 
         notes = new ArrayList<>();
 
-        searchView = itemView.findViewById(R.id.search_cloud_note);
-        searchView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!s.toString().isEmpty()) {
-                    search(s.toString());
-                } else {
-                    search(s.toString());
-                }
-            }
-        });
+//        searchView = itemView.findViewById(R.id.search_cloud_note);
+//        searchView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (!s.toString().isEmpty()) {
+//                    search(s.toString());
+//                } else {
+//                    search(s.toString());
+//                }
+//            }
+//        });
 
         if (auth.getCurrentUser() != null) {
 //            reference = database.getReference().child(Common.STR_CLOUD_NOTE).child(auth.getCurrentUser().getUid());
@@ -106,7 +105,7 @@ public class CloudNoteFragment extends Fragment{
                     .child("CloudNote").child(auth.getCurrentUser().getUid());
         }
 
-        searchView.setVisibility(View.INVISIBLE);
+//        searchView.setVisibility(View.INVISIBLE);
 
         updateUI();
         loadDate();
@@ -116,58 +115,60 @@ public class CloudNoteFragment extends Fragment{
     }
 
     public void loadDate() {
-        Query query = reference.orderByValue();
-         adapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(
-          NoteItem.class,
-          R.layout.cloud_layout_note_item,
-          CloudNoteViewHolder.class,
-          query
-        ) {
+
+        database = FirebaseDatabase.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference()
+                .child("CloudNote").child(auth.getCurrentUser().getUid());
+
+        options = new FirebaseRecyclerOptions.Builder<NoteItem>()
+                .setQuery(reference, NoteItem.class)
+                .build();
+
+        adapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(options) {
             @Override
-            protected void populateViewHolder(final CloudNoteViewHolder viewHolder, NoteItem noteItem, int position) {
-                final String noteId = getRef(position).getKey();
+            protected void onBindViewHolder(@NonNull final CloudNoteViewHolder viewHolder, int position, @NonNull NoteItem noteItem) {
+                      final String noteId = getRef(position).getKey();
 
-                reference.child(noteId).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
-                            String title = dataSnapshot.child("title").getValue().toString();
-                            String timestamp = dataSnapshot.child("timestamp").getValue().toString();
+                      reference.child(noteId).addValueEventListener(new ValueEventListener() {
+                          @Override
+                          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                               if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
+                                   String title = dataSnapshot.child("title").getValue().toString();
+                                   String timestamp  = dataSnapshot.child("timestamp").getValue().toString();
 
-                            viewHolder.setCloudNoteTitle(title);
+                                   viewHolder.setCloudNoteTitle(title);
 
-                            GetTimeAgo getTimeAgo = new GetTimeAgo();
-                            viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
+                                   GetTimeAgo getTimeAgo = new GetTimeAgo();
+                                   viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
 
-                            //make clickable
-                            viewHolder.setItemClickListener(new ItemClickListener() {
-                                @Override
-                                public void onClick(View view, int position) {
-                                    Intent intent = new Intent(getContext(), EditCloudNoteActivity.class);
-                                    intent.putExtra("noteId", noteId);
-                                    startActivity(intent);
-                                }
-                            });
-//
-//                           if (dataSnapshot.child(noteId).getValue() == null) {
-//                               noCloudItemTxt.setVisibility(View.INVISIBLE);
-//                           } else {
-//                               noCloudItemTxt.setVisibility(View.VISIBLE);
-//                           }
+                                   viewHolder.setItemClickListener(new ItemClickListener() {
+                                       @Override
+                                       public void onClick(View view, int position) {
+                                           Intent intent = new Intent(getContext(), EditCloudNoteActivity.class);
+                                           intent.putExtra("noteId", noteId);
+                                           startActivity(intent);
+                                       }
+                                   });
+                               }
+                          }
 
-                        }
+                          @Override
+                          public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
+                          }
+                      });
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+            @NonNull
+            @Override
+            public CloudNoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.cloud_layout_note_item, parent, false);
+                return new CloudNoteViewHolder(itemView);
             }
         };
+        adapter.startListening();
         recyclerView.setAdapter(adapter);
-
     }
 
     private void updateUI() {
@@ -194,74 +195,74 @@ public class CloudNoteFragment extends Fragment{
             adapter.startListening();
     }
 
-    private void search(String s) {
-        final Query query = reference.orderByChild("title")
-                .startAt(s)
-                .endAt(s + "\uf8ff");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
-                    notes.clear();
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        final NoteItem noteItem = data.getValue(NoteItem.class);
-                        notes.add(noteItem);
-                        Query query1 = reference.orderByValue();
-                        adapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(
-                                NoteItem.class,
-                                R.layout.cloud_layout_note_item,
-                                CloudNoteViewHolder.class,
-                                query
-                        ) {
-                            @Override
-                            protected void populateViewHolder(final CloudNoteViewHolder viewHolder, NoteItem noteItem, int position) {
-                                final String noteId = getRef(position).getKey();
-                                reference.child(noteId).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
-                                            String title = dataSnapshot.child("title").getValue().toString();
-                                            String timestamp = dataSnapshot.child("timestamp").getValue().toString();
+//    private void search(String s) {
+//        final Query query = reference.orderByChild("title")
+//                .startAt(s)
+//                .endAt(s + "\uf8ff");
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.hasChildren()) {
+//                    notes.clear();
+//                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                        final NoteItem noteItem = data.getValue(NoteItem.class);
+//                        notes.add(noteItem);
+//                        Query query1 = reference.orderByValue();
+//                        adapter = new FirebaseRecyclerAdapter<NoteItem, CloudNoteViewHolder>(
+//                                NoteItem.class,
+//                                R.layout.cloud_layout_note_item,
+//                                CloudNoteViewHolder.class,
+//                                query
+//                        ) {
+//                            @Override
+//                            protected void populateViewHolder(final CloudNoteViewHolder viewHolder, NoteItem noteItem, int position) {
+//                                final String noteId = getRef(position).getKey();
+//                                reference.child(noteId).addValueEventListener(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                        if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
+//                                            String title = dataSnapshot.child("title").getValue().toString();
+//                                            String timestamp = dataSnapshot.child("timestamp").getValue().toString();
+//
+//                                            viewHolder.setCloudNoteTitle(title);
+//
+//                                            GetTimeAgo getTimeAgo = new GetTimeAgo();
+//                                            viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
+//
+//                                            viewHolder.setItemClickListener(new ItemClickListener() {
+//                                                @Override
+//                                                public void onClick(View view, int position) {
+//                                                    Intent intent = new Intent(getContext(), EditCloudNoteActivity.class);
+//                                                    intent.putExtra("noteId", noteId);
+//                                                    startActivity(intent);
+//                                                }
+//                                            });
+//
+//                                        }
+//
+//                                        }
+//
+//                                    @Override
+//                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                    }
+//                                });
+//                            }
+//                        };
+//                        recyclerView.setAdapter(adapter);
+//                        adapter.notifyDataSetChanged();
+//
+//                    }
+//
+//
+//                }
+//            }
 
-                                            viewHolder.setCloudNoteTitle(title);
-
-                                            GetTimeAgo getTimeAgo = new GetTimeAgo();
-                                            viewHolder.setCloudNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getContext()));
-
-                                            viewHolder.setItemClickListener(new ItemClickListener() {
-                                                @Override
-                                                public void onClick(View view, int position) {
-                                                    Intent intent = new Intent(getContext(), EditCloudNoteActivity.class);
-                                                    intent.putExtra("noteId", noteId);
-                                                    startActivity(intent);
-                                                }
-                                            });
-
-                                        }
-
-                                        }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-                        };
-                        recyclerView.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
-
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 }
