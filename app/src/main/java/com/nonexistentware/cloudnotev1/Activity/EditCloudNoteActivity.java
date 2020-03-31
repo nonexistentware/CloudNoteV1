@@ -3,6 +3,7 @@ package com.nonexistentware.cloudnotev1.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -21,18 +22,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
+import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EditCloudNoteActivity extends AppCompatActivity {
 
-    private TextView removeBtn, saveBtn;
+    private TextView removeBtn, saveBtn, saveSqlBtn;
     private EditText cloudNoteTitle, cloudNoteBody;
 
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
+
+    private Calendar calendar;
+    private String todayDate;
+    private String currentTime;
 
     private String noteId;
     private boolean isExist;
@@ -56,6 +64,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
 
         removeBtn = findViewById(R.id.edit_cloud_note_delete_btn);
         saveBtn = findViewById(R.id.edit_cloud_note_save_btn);
+        saveSqlBtn = findViewById(R.id.edit_cloud_note_save_to_sql_btn);
 
         cloudNoteTitle = findViewById(R.id.title_cloud_note_edit_activity);
         cloudNoteBody = findViewById(R.id.body_cloud_note_edit_activity);
@@ -85,7 +94,27 @@ public class EditCloudNoteActivity extends AppCompatActivity {
             }
         });
 
+        saveSqlBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveToSqlMethod();
+            }
+        });
+
+        calendar = Calendar.getInstance();
+        todayDate = calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
+        Log.d("DATE", "Date: "+todayDate);
+        currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
+        Log.d("TIME", "Time: "+currentTime);
+
         putData();
+    }
+
+    private String pad(int time) {
+        if(time < 10)
+            return "0"+time;
+        return String.valueOf(time);
+
     }
 
     private void putData() {
@@ -166,5 +195,28 @@ public class EditCloudNoteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void saveToSqlMethod() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading note...");
+        progressDialog.show();
+
+
+        if (cloudNoteTitle.getText().length() != 0) {
+            NoteItem note = new NoteItem(cloudNoteTitle.getText().toString(),
+                    cloudNoteTitle.getText().toString(), todayDate, currentTime);
+            NoteDataBase nDB = new NoteDataBase(this);
+            long id = nDB.addNote(note);
+            NoteItem check = nDB.getNote(id);
+            Log.d("inserted", "Note: " + id + " -> Title:" + check.getNoteTitle() + " Date: " + check.getDate());
+//            onBackPressed();
+
+            progressDialog.dismiss();
+            Toast.makeText(this, "Note Saved.", Toast.LENGTH_SHORT).show();
+        } else {
+            progressDialog.dismiss();
+            cloudNoteTitle.setError("Title Can not be Blank.");
+        }
     }
 }
