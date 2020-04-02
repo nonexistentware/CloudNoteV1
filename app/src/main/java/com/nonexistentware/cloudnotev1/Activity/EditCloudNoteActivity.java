@@ -3,7 +3,9 @@ package com.nonexistentware.cloudnotev1.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -90,7 +92,23 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteCloudNote();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(EditCloudNoteActivity.this);
+                dialog.setTitle("Remove cloud note");
+                dialog.setMessage("Do you want to remove this note from cloud?");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteCloudNote();
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
 

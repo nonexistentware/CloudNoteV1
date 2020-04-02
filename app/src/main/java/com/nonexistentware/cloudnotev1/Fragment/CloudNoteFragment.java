@@ -39,6 +39,7 @@ import com.nonexistentware.cloudnotev1.ViewHolder.CloudNoteViewHolder;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class CloudNoteFragment extends Fragment{
@@ -58,6 +59,10 @@ public class CloudNoteFragment extends Fragment{
 
     //search
     EditText searchView;
+
+    private Calendar calendar;
+    private String todayDate;
+    private String currentTime;
 
     @Nullable
     @Override
@@ -107,11 +112,24 @@ public class CloudNoteFragment extends Fragment{
 
 //        searchView.setVisibility(View.INVISIBLE);
 
+        calendar = Calendar.getInstance();
+        todayDate = calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
+        Log.d("DATE", "Date: "+todayDate);
+        currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
+        Log.d("TIME", "Time: "+currentTime);
+
         updateUI();
         loadDate();
 
 
         return itemView;
+    }
+
+    private String pad(int time) {
+        if(time < 10)
+            return "0"+time;
+        return String.valueOf(time);
+
     }
 
     public void loadDate() {
