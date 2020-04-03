@@ -2,6 +2,7 @@ package com.nonexistentware.cloudnotev1.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -11,9 +12,19 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        if (!isConnected(MainActivity.this)) buildDialog(MainActivity.this).show();
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
 //        setSupportActionBar(toolbar);
@@ -116,6 +127,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         updateNavHeader();
+    }
+
+    public boolean isConnected(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            android.net.NetworkInfo wifi = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            android.net.NetworkInfo mobile = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if ((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting()))
+                return true;
+            else return false;
+        } else
+        return false;
+    }
+
+    public AlertDialog.Builder buildDialog(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(MainActivity.this, R.style.CustomeAlertDialogColors));
+        String title = "No internet connection.";
+        String message = "Turn on wifi or mobile data to proceed?";
+
+        ForegroundColorSpan titleColor = new ForegroundColorSpan(context.getResources().getColor(android.R.color.black));
+        ForegroundColorSpan messageColor = new ForegroundColorSpan(Color.BLACK);
+
+        SpannableStringBuilder msBuilder = new SpannableStringBuilder(message);
+        SpannableStringBuilder ssBuilder = new SpannableStringBuilder(title);
+        ssBuilder.setSpan(
+                titleColor,
+                0,
+                title.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        msBuilder.setSpan(
+                messageColor,
+                0,
+                message.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        builder.setTitle(ssBuilder);
+        builder.setMessage(msBuilder);
+
+        builder.setPositiveButton("To connection settings", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        });
+
+        builder.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        return builder;
     }
 
     @Override
