@@ -99,6 +99,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteCloudNote();
+                        onBackPressed();
                     }
                 });
                 dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
