@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView createUserBtn, toLogin;
     private EditText userMail, userPass;
 
+    ProgressBar progressBar;
+
     Uri pickedImageUri;
 
     static int PReqCode = 1;
@@ -64,6 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
         userPass = findViewById(R.id.user_pass_reg);
 
         toLogin = findViewById(R.id.to_login_screen);
+
+        progressBar = findViewById(R.id.register_progress);
 
         auth = FirebaseAuth.getInstance();
         fUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -100,14 +106,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        progressBar.setVisibility(View.INVISIBLE);
+
     }
 
     private void createNewUser(final String mail, String pass) {
+            createUserBtn.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         auth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            progressBar.setVisibility(View.INVISIBLE);
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             updateUserInfo(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
@@ -171,6 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void updateUi() {
+        progressBar.setVisibility(View.VISIBLE);
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
@@ -182,7 +194,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkAndRequestForPermission() {
-
 
         if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -219,7 +230,8 @@ public class RegisterActivity extends AppCompatActivity {
         {
             super.onBackPressed();
             return;
-        } else { Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
         }
         mBackPressed = System.currentTimeMillis();
     }

@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.EditCloudActivity">
+    tools:context=".Activity.EditCloudActivity"
+    android:background="@android:color/black">
 
     <LinearLayout
         android:id="@+id/layTop"
@@ -23,12 +24,14 @@
             android:layout_gravity="top"
             android:ems="10"
             android:hint="Title"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"
             android:paddingStart="12dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@android:color/white"/>
+            android:backgroundTint="@android:color/black"/>
 
     </LinearLayout>
 
@@ -48,7 +51,7 @@
             android:id="@+id/cloud_note_update_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:text="Save"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
@@ -60,7 +63,7 @@
             android:id="@+id/cloud_note_remove_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:text="Delete"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
@@ -82,13 +85,15 @@
             android:layout_height="match_parent"
             android:layout_gravity="top"
             android:ems="10"
-            android:hint=""
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"
             android:paddingStart="12dp"
             android:paddingTop="4dp"
-            android:backgroundTint="@android:color/white"/>
+            android:hint="Note"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:backgroundTint="@android:color/black"/>
 
     </RelativeLayout>
 

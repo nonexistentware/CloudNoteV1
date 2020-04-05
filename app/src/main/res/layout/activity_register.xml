@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.RegisterActivity">
+    tools:context=".Activity.RegisterActivity"
+    android:background="@android:color/black">
 
     <LinearLayout
+        android:id="@+id/lay"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -19,7 +21,8 @@
             android:id="@+id/user_image_reg"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/user" />
+            android:src="@drawable/user_account_white"
+            />
 
         <EditText
             android:textColorHint="@android:color/darker_gray"
@@ -27,8 +30,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
+            android:textColor="@android:color/white"
             android:inputType="textEmailAddress"
-            android:backgroundTint="@android:color/white"
+            android:backgroundTint="@android:color/black"
             android:layout_margin="10dp"/>
 
         <EditText
@@ -37,12 +41,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
+            android:textColor="@android:color/white"
             android:inputType="textPassword"
-            android:backgroundTint="@android:color/white"
+            android:backgroundTint="@android:color/black"
             android:layout_margin="10dp"/>
 
         <TextView
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:id="@+id/user_reg_btn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -61,7 +66,7 @@
         <TextView
             android:layout_marginBottom="15dp"
             android:gravity="center"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:id="@+id/to_login_screen"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -69,5 +74,11 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/register_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lay"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

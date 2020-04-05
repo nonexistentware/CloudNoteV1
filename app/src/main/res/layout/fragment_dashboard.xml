@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragment.MainNoteFragment">
+    tools:context=".Fragment.MainNoteFragment"
+    android:background="@android:color/black">
 
 
 <RelativeLayout
@@ -15,7 +16,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/main_toolbar"
             android:layout_width="fill_parent"
-            android:layout_height="?actionBarSize" />
+            android:layout_height="?actionBarSize"
+            android:background="@android:color/black"/>
 
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:layout_below="@+id/main_toolbar"
@@ -23,7 +25,7 @@
         app:mt_hint="Enter title"
         app:mt_speechMode="false"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_search"
@@ -47,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text='List is empty. Add New notes using " + "'
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -70,8 +72,8 @@
                 android:layout_marginBottom="70dp"
                 android:layout_marginRight="10dp"
                 android:src="@drawable/addicon"
-                android:backgroundTint="@android:color/black"
-                android:tint="@android:color/white"/>
+                android:backgroundTint="@android:color/white"
+                android:tint="@android:color/black"/>
 
         </RelativeLayout>
 

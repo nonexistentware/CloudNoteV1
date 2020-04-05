@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getColor(R.color.white)); //icon at toolbar get drawer
+
         updateNavHeader();
     }
 
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                     .into(navUserImage, new Callback() {
                                         @Override
                                         public void onSuccess() {
-                                            
+
                                         }
 
                                         @Override

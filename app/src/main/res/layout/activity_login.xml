@@ -5,9 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.LoginActivity">
+    tools:context=".Activity.LoginActivity"
+    android:background="@android:color/black">
 
     <LinearLayout
+        android:id="@+id/lay"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="vertical"
@@ -21,7 +23,8 @@
         android:hint="Email"
         android:id="@+id/user_email_login"
         android:textColorHint="@android:color/darker_gray"
-        android:backgroundTint="@android:color/white"
+        android:backgroundTint="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_margin="10dp"/>
 
         <EditText
@@ -31,7 +34,8 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:textColorHint="@android:color/darker_gray"
-            android:backgroundTint="@android:color/white"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white"
             android:layout_margin="10dp"/>
 
         <TextView
@@ -41,7 +45,7 @@
         android:text="Login"
         android:gravity="center"
         android:textSize="15sp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
@@ -57,7 +61,7 @@
              android:layout_width="fill_parent"
              android:id="@+id/move_to_register_screen"
              android:text="Don't have an account? Create it now."
-             android:textColor="@android:color/black"
+             android:textColor="@android:color/white"
              android:gravity="center"/>
 
          <TextView
@@ -65,8 +69,15 @@
              android:layout_width="fill_parent"
              android:id="@+id/user_forgot_btn"
              android:text="Forgot password"
-             android:textColor="@android:color/black"/>
+             android:textColor="@android:color/white"/>
 
      </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/login_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lay"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
