@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -29,6 +30,12 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
 
+    ProgressBar progressBar;
+
+    //double tab exit
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +49,10 @@ public class LoginActivity extends AppCompatActivity {
         toRegister = findViewById(R.id.move_to_register_screen);
         loginBtn = findViewById(R.id.user_login_btn);
         forgotPassBtn = findViewById(R.id.user_forgot_btn);
+        progressBar = findViewById(R.id.login_progress);
 
         forgotPassBtn.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,8 +61,10 @@ public class LoginActivity extends AppCompatActivity {
                 String mail = userInputMail.getText().toString().trim();
                 String pass = userInputPass.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(mail) || !TextUtils.isEmpty(pass)) {
+                if (!TextUtils.isEmpty(mail) && !TextUtils.isEmpty(pass)) {
                    logIn(mail, pass);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email and password fields can't be empty", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -69,18 +80,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void logIn(String mail, String pass) {
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Logging in, please wait...");
-        progressDialog.show();
-
+        loginBtn.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         auth.signInWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        progressDialog.dismiss();
-
+                        progressBar.setVisibility(View.INVISIBLE);
                            if (task.isSuccessful()) {
                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                updateUI();
@@ -106,5 +112,16 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             updateUI();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            return;
+        } else { Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressed = System.currentTimeMillis();
     }
 }

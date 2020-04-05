@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,12 +44,16 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView createUserBtn, toLogin;
     private EditText userMail, userPass;
 
-    private ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     Uri pickedImageUri;
 
     static int PReqCode = 1;
     static int REQUESCODE = 1;
+
+    //double tab exit
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,8 @@ public class RegisterActivity extends AppCompatActivity {
         userPass = findViewById(R.id.user_pass_reg);
 
         toLogin = findViewById(R.id.to_login_screen);
+
+        progressBar = findViewById(R.id.register_progress);
 
         auth = FirebaseAuth.getInstance();
         fUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -91,41 +98,31 @@ public class RegisterActivity extends AppCompatActivity {
                 String mail = userMail.getText().toString().trim();
                 String pass = userPass.getText().toString().trim();
 
-                String str1 = RegisterActivity.this.userPass.getText().toString().trim();
-                if (TextUtils.isEmpty(mail))
-                    Toast.makeText(RegisterActivity.this, "Email field is empty. Please enter your email", Toast.LENGTH_SHORT).show();
-                if (TextUtils.isEmpty(pass))
-                    Toast.makeText(RegisterActivity.this, "Password field is empty. Please enter your email", Toast.LENGTH_SHORT).show();
-                if (str1.length() < 6)
-                    Toast.makeText(RegisterActivity.this, "Password must be more then 6 symbols", Toast.LENGTH_SHORT).show();
-                if (mail.isEmpty() || pass.isEmpty())
-                    Toast.makeText(RegisterActivity.this, "Email and password fields are empty", Toast.LENGTH_SHORT).show();
-
-                createNewUser(mail, pass);
+                if (!TextUtils.isEmpty(mail) && !TextUtils.isEmpty(pass)) {
+                    createNewUser(mail, pass);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email and password fields can't be empty", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        progressBar.setVisibility(View.INVISIBLE);
 
     }
 
     private void createNewUser(final String mail, String pass) {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Processing your request, please wait...");
-        progressDialog.show();
-
+            createUserBtn.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
         auth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-                            progressDialog.dismiss();
-
+                            progressBar.setVisibility(View.INVISIBLE);
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             updateUserInfo(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else {
-                            progressDialog.dismiss();
                             Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -165,7 +162,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             // user info updated successfully
 //                                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
 //                                            showMessage("Register Complete");
-                                           updateUi();
+                                            updateUi();
                                         }
 
                                     }
@@ -185,6 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private void updateUi() {
+        progressBar.setVisibility(View.VISIBLE);
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
@@ -196,7 +194,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void checkAndRequestForPermission() {
-
 
         if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -226,4 +223,16 @@ public class RegisterActivity extends AppCompatActivity {
             userImg.setImageURI(pickedImageUri);
         }
     }
-}
+
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            return;
+        } else {
+            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressed = System.currentTimeMillis();
+    }
+ }

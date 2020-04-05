@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.NewNote">
+    tools:context=".Activity.NewNote"
+    android:background="@android:color/black">
 
     <LinearLayout
         android:id="@+id/layTop"
@@ -24,11 +25,13 @@
             android:ems="10"
             android:gravity="top"
             android:hint="Title"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
             android:inputType="textMultiLine"
             android:paddingStart="12dp"
             android:paddingTop="4dp"
             android:paddingEnd="12dp"
-            android:backgroundTint="@android:color/white"/>
+            android:backgroundTint="@android:color/black"/>
 
     </LinearLayout>
 
@@ -41,20 +44,19 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:weightSum="2"
-        android:layout_margin="10dp"
-        android:background="@android:color/white">
+        android:layout_margin="10dp">
 
         <TextView
             android:layout_weight="1"
             android:id="@+id/new_note_activity_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/darker_gray"
             android:text="Save"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/black"/>
 
         <TextView
             android:gravity="right"
@@ -62,12 +64,12 @@
             android:id="@+id/new_note_upload_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/darker_gray"
             android:text="Upload to cloud"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
-            android:background="@android:color/white"/>
+            android:background="@android:color/black"/>
 
 
     </LinearLayout>
@@ -90,7 +92,10 @@
             android:paddingStart="12dp"
             android:paddingTop="4dp"
             android:paddingEnd="12dp"
-            android:backgroundTint="@android:color/white"/>
+            android:hint="Note"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/black"/>
 
     </RelativeLayout>
 

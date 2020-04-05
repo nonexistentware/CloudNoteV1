@@ -22,20 +22,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.nonexistentware.cloudnotev1.Fragment.CloudNoteFragment;
 import com.nonexistentware.cloudnotev1.Fragment.MainNoteFragment;
 import com.nonexistentware.cloudnotev1.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth auth;
     FirebaseUser currentUser;
-    FirebaseDatabase database;
-    public DatabaseReference reference;
 
     private static final int PReqCode = 2;
     private static final int REQUESCODE = 2;
@@ -48,30 +45,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Toolbar toolbar;
 
+    //double tab exit
     private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         Toolbar toolbar = findViewById(R.id.main_toolbar);
 //        setSupportActionBar(toolbar);
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
-//            reference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
-//                    .child(auth.getCurrentUser().getUid());
-        if (auth.getCurrentUser() != null) {
-            reference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
-                    .child(auth.getCurrentUser().getUid());
-        }
-
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout_main);
         navigationView = findViewById(R.id.nav_view_drawer);
@@ -115,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
+        actionBarDrawerToggle.getDrawerArrowDrawable().setColor(getColor(R.color.white)); //icon at toolbar get drawer
+
         updateNavHeader();
     }
 
@@ -130,10 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.menu_drawer_login) {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
-
-//        if (id == R.id.menu_drawable_user_profile) {
-//            startActivity(new Intent(getApplicationContext(), UserProfileActivity.class));
-//        }
 
         if (id == R.id.menu_drawer_signout) {
             FirebaseAuth.getInstance().signOut();
@@ -152,35 +137,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void updateNavHeader() {
-        FirebaseUser firebaseUser = this.currentUser;
-        if (firebaseUser == null) {
-            startActivity(new Intent(getApplication(), RegisterActivity.class));
-        } else if (firebaseUser != null) {
+//        FirebaseUser firebaseUser = this.currentUser;
+//        if (firebaseUser == null) {
+//            startActivity(new Intent(getApplication(), RegisterActivity.class));
+//            finish();
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+            finish();
+        } else {
             View headerView = navigationView.getHeaderView(0);
             TextView navUserEmail = headerView.findViewById(R.id.drawer_nav_user_mail);
-            ImageView navUserImage = headerView.findViewById(R.id.drawer_nav_user_icon);
+            final ImageView navUserImage = headerView.findViewById(R.id.drawer_nav_user_icon);
             //add name view
             navUserEmail.setText(currentUser.getEmail());
 
             Picasso.with(this)
                     .load(this.currentUser.getPhotoUrl())
-                    .into(navUserImage);
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(navUserImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(getApplicationContext())
+                                    .load(currentUser.getPhotoUrl())
+                                    .error(R.drawable.ic_error_outline_black_24dp)
+                                    .into(navUserImage, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+
+                                        @Override
+                                        public void onError() {
+
+                                        }
+                                    });
+                        }
+                    });
         }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
             super.onBackPressed();
             return;
-        } else {
-            Toast.makeText(getBaseContext(), "Click two times to close an activity", Toast.LENGTH_SHORT).show(); }
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
         mBackPressed = System.currentTimeMillis();
     }
 }
-

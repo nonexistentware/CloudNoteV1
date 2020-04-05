@@ -10,7 +10,7 @@
 
         <item
             android:title="Login"
-            android:id="@+id/menu_drawer_login"/>
+            android:id="@+id/menu_drawer_login" />
 
 <!--        <item-->
 <!--            android:title="User profile"-->

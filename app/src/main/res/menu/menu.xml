@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:icon="@drawable/ic_dashboard_black_24dp"
+    <item android:icon="@drawable/ic_dashboard_white_24dp"
         android:id="@+id/dashboard_menu"
-        android:title="Dashboard" />
+        android:title="Dashboard"/>
 
-    <item android:icon="@drawable/ic_cloud_queue_black_24dp"
+    <item android:icon="@drawable/ic_cloud_queue_white_24dp"
         android:id="@+id/cloud_menu"
-        android:title="Cloud" />
+        android:title="Cloud"/>
 </menu>
