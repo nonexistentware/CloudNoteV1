@@ -29,6 +29,10 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
 
+    //double tab exit
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +56,10 @@ public class LoginActivity extends AppCompatActivity {
                 String mail = userInputMail.getText().toString().trim();
                 String pass = userInputPass.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(mail) || !TextUtils.isEmpty(pass)) {
+                if (!TextUtils.isEmpty(mail) && !TextUtils.isEmpty(pass)) {
                    logIn(mail, pass);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email and password fields can't be empty", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -106,5 +112,16 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             updateUI();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            return;
+        } else { Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+        }
+        mBackPressed = System.currentTimeMillis();
     }
 }
