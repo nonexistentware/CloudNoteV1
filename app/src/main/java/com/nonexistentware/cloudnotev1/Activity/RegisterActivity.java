@@ -123,6 +123,8 @@ public class RegisterActivity extends AppCompatActivity {
                             updateUserInfo(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            createUserBtn.setVisibility(View.VISIBLE);
                             Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }

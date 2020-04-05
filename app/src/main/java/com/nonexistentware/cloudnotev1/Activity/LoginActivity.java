@@ -93,6 +93,8 @@ public class LoginActivity extends AppCompatActivity {
                                finish();
                                Toast.makeText(getApplicationContext(), "Sing in successfully", Toast.LENGTH_SHORT).show();
                            } else {
+                               progressBar.setVisibility(View.INVISIBLE);
+                               loginBtn.setVisibility(View.VISIBLE);
                                Toast.makeText(getApplicationContext(), "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                            }
                     }

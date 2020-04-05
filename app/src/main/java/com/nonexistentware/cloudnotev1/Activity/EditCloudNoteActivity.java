@@ -92,7 +92,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(EditCloudNoteActivity.this);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(EditCloudNoteActivity.this, R.style.alertDialog);
                 dialog.setTitle("Remove cloud note");
                 dialog.setMessage("Do you want to remove this note from cloud?");
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

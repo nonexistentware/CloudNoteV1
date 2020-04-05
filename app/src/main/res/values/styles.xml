@@ -12,7 +12,7 @@
         <item name="android:background">@android:color/black</item>
     </style>
 
-    <style name="progressDialog">
+    <style name="alertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:background">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
