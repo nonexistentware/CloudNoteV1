@@ -51,8 +51,6 @@ public class EditCloudNoteActivity extends AppCompatActivity {
     private String noteId;
     private boolean isExist;
 
-    Uri uri;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

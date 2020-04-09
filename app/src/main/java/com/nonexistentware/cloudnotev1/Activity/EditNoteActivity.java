@@ -41,7 +41,7 @@ import java.util.Map;
 public class EditNoteActivity extends AppCompatActivity {
 
     private EditText noteTitle, noteBody;
-    private TextView saveBtn, uploadBtn, deleteBtn;
+    private TextView saveBtn, uploadBtn, deleteBtn, calendarBtn;
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
@@ -77,6 +77,7 @@ public class EditNoteActivity extends AppCompatActivity {
         saveBtn = findViewById(R.id.editnote_btn_save);
         uploadBtn = findViewById(R.id.editnote_btn_upload);
         deleteBtn = findViewById(R.id.editnote_btn_delete);
+        calendarBtn = findViewById(R.id.editnote_btn_export_calendar);
 
         Intent i = getIntent();
         nid = i.getLongExtra("ID", 0);
@@ -147,6 +148,13 @@ public class EditNoteActivity extends AppCompatActivity {
                 } else {
                     Snackbar.make(v, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exportToCalendar();
             }
         });
 
@@ -318,6 +326,15 @@ public class EditNoteActivity extends AppCompatActivity {
         } else {
             showAlert(this);
         }
+    }
+
+    private void exportToCalendar() {
+        NoteItem noteItem = new NoteItem();
+        Calendar calendarEvent = Calendar.getInstance();
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("title", noteTitle.getText().toString());
+        startActivity(intent);
     }
 }
 
