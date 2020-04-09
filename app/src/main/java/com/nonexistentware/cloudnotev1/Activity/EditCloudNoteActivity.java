@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -36,7 +38,7 @@ import java.util.Map;
 
 public class EditCloudNoteActivity extends AppCompatActivity {
 
-    private TextView removeBtn, saveBtn, saveSqlBtn;
+    private TextView removeBtn, saveBtn, saveSqlBtn, calendarBtn;
     private EditText cloudNoteTitle, cloudNoteBody;
 
     private FirebaseAuth auth;
@@ -48,6 +50,8 @@ public class EditCloudNoteActivity extends AppCompatActivity {
 
     private String noteId;
     private boolean isExist;
+
+    Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         removeBtn = findViewById(R.id.edit_cloud_note_delete_btn);
         saveBtn = findViewById(R.id.edit_cloud_note_save_btn);
         saveSqlBtn = findViewById(R.id.edit_cloud_note_save_to_sql_btn);
+        calendarBtn = findViewById(R.id.edit_cloud_note_btn_export_calendar);
 
         cloudNoteTitle = findViewById(R.id.title_cloud_note_edit_activity);
         cloudNoteBody = findViewById(R.id.body_cloud_note_edit_activity);
@@ -119,6 +124,13 @@ public class EditCloudNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveToSqlMethod();
+            }
+        });
+
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exportToCalendar();
             }
         });
 
@@ -282,5 +294,14 @@ public class EditCloudNoteActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void exportToCalendar() {
+        NoteItem noteItem = new NoteItem();
+        Calendar calendarEvent = Calendar.getInstance();
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("title", cloudNoteTitle.getText().toString());
+        startActivity(intent);
     }
 }

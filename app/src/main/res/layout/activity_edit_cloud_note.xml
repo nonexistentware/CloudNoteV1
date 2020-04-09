@@ -43,7 +43,7 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="3"
+        android:weightSum="4"
         android:layout_margin="10dp">
 
         <TextView
@@ -67,6 +67,19 @@
             android:text="Save to device"
             android:layout_alignParentBottom="true"
             android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"/>
+
+
+        <TextView
+            android:gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/edit_cloud_note_btn_export_calendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="Calendar"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
 
