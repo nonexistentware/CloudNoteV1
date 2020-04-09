@@ -14,8 +14,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.EditCloudNoteActivity"
             android:screenOrientation="portrait"></activity>
-        <activity android:name=".Activity.EditCloudActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.ShowNotesActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.EditNoteActivity"

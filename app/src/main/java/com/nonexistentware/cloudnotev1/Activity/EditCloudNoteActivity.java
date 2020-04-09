@@ -7,7 +7,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -126,6 +128,11 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
         Log.d("TIME", "Time: "+currentTime);
 
+        saveBtn.setVisibility(View.INVISIBLE);
+
+        titleChange(); //show save button
+        bodyChange();//show save button
+
         putData();
     }
 
@@ -237,5 +244,43 @@ public class EditCloudNoteActivity extends AppCompatActivity {
             progressDialog.dismiss();
             cloudNoteTitle.setError("Title Can not be Blank.");
         }
+    }
+
+    private void titleChange() {
+        cloudNoteTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void bodyChange() {
+        cloudNoteBody.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                saveBtn.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }
