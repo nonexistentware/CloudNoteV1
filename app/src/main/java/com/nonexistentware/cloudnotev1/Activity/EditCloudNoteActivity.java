@@ -68,13 +68,13 @@ public class EditCloudNoteActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        removeBtn = findViewById(R.id.edit_cloud_note_delete_btn);
-        saveBtn = findViewById(R.id.edit_cloud_note_save_btn);
-        saveSqlBtn = findViewById(R.id.edit_cloud_note_save_to_sql_btn);
-        calendarBtn = findViewById(R.id.edit_cloud_note_btn_export_calendar);
-
         cloudNoteTitle = findViewById(R.id.title_cloud_note_edit_activity);
         cloudNoteBody = findViewById(R.id.body_cloud_note_edit_activity);
+
+        saveBtn = findViewById(R.id.edit_cloud_note_save_btn);
+        saveSqlBtn = findViewById(R.id.edit_cloud_note_save_to_sql_btn);
+        removeBtn = findViewById(R.id.edit_cloud_note_delete_btn);
+        calendarBtn = findViewById(R.id.edit_cloud_note_btn_export_calendar);
 
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
@@ -138,20 +138,14 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
         Log.d("TIME", "Time: "+currentTime);
 
-        saveBtn.setVisibility(View.INVISIBLE);
-
-        titleChange(); //show save button
-        bodyChange();//show save button
-
         putData();
+
+//        saveBtn.setVisibility(View.GONE);
+//
+//        titleChange();
+//        bodyChange();
     }
 
-    private String pad(int time) {
-        if(time < 10)
-            return "0"+time;
-        return String.valueOf(time);
-
-    }
 
     private void putData() {
         if (isExist) {
@@ -185,36 +179,43 @@ public class EditCloudNoteActivity extends AppCompatActivity {
 
                 databaseReference.child(noteId).updateChildren(updateNoteMap);
 
-                Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
-            } else {
+                    Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+                } else {
 
-                final DatabaseReference cloudNoteRef = databaseReference.push();
+                    final DatabaseReference cloudNoteRef = databaseReference.push();
 
-                final Map noteMap = new HashMap();
-                noteMap.put("title", title);
-                noteMap.put("body", body);
-                noteMap.put("timestamp", ServerValue.TIMESTAMP);
+                    final Map noteMap = new HashMap();
+                    noteMap.put("title", title);
+                    noteMap.put("body", body);
+                    noteMap.put("timestamp", ServerValue.TIMESTAMP);
 
-                Thread mainThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        cloudNoteRef.setValue(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Note added to database", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Thread mainThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            cloudNoteRef.setValue(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Note added to database", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
-                    }
-                });
-                mainThread.start();
+                            });
+                        }
+                    });
+                    mainThread.start();
+                }
+            } else {
+                Toast.makeText(this, "USERS IS NOT SIGNED IN", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, "USERS IS NOT SIGNED IN", Toast.LENGTH_SHORT).show();
         }
+
+    private String pad(int time) {
+        if(time < 10)
+            return "0"+time;
+        return String.valueOf(time);
+
     }
 
     private void deleteCloudNote() {

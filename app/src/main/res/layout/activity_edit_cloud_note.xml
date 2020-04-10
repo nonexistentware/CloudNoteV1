@@ -25,7 +25,7 @@
             android:ems="10"
             android:hint="Title"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"
@@ -52,13 +52,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:text="Save"
+            android:text="Update"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
 
-
         <TextView
+            android:gravity="center"
             android:layout_weight="1"
             android:id="@+id/edit_cloud_note_save_to_sql_btn"
             android:layout_width="wrap_content"
@@ -66,10 +66,8 @@
             android:textColor="@android:color/white"
             android:text="Save to device"
             android:layout_alignParentBottom="true"
-            android:gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
-
 
         <TextView
             android:gravity="center"
@@ -78,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:text="Calendar"
+            android:text="Add to calendar"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
@@ -93,8 +91,7 @@
             android:text="Delete"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"/>
-
+            android:layout_marginLeft="0dp"/>
 
     </LinearLayout>
 
@@ -113,7 +110,7 @@
             android:ems="10"
             android:hint="Note"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@android:color/darker_gray"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:paddingEnd="12dp"

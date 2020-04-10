@@ -108,7 +108,8 @@ public class EditNoteActivity extends AppCompatActivity {
                         noteBody.getText().toString(), todayDate, currentTime);
                 NoteDataBase ndb = new NoteDataBase(getApplicationContext());
                 long id = ndb.editNote(note);
-                goToMain();
+
+                Toast.makeText(getApplicationContext(), "Note updated", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,10 +161,10 @@ public class EditNoteActivity extends AppCompatActivity {
 
         putData();
 
-        saveBtn.setVisibility(View.INVISIBLE);
-
-        titleChange(); //show save button
-        bodyChange(); //show save button
+//        saveBtn.setVisibility(View.GONE);
+//
+//        titleChange(); //show save button
+//        bodyChange(); //show save button
 
     }
 
@@ -244,7 +245,8 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     private void goToMain() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
     }
 
     public void showAlert(Context aContext) {

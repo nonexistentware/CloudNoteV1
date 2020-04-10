@@ -63,7 +63,7 @@ public class NewNote extends AppCompatActivity {
         noteBody = findViewById(R.id.body_note_new_activity);
 
         saveBtn = findViewById(R.id.new_note_activity_btn);
-        uploadBtn = findViewById(R.id.new_note_upload_btn);
+//        uploadBtn = findViewById(R.id.new_note_upload_btn);
 //        removeFab = findViewById(R.id.delete_fab_note_btn);
 
         noteTitle.addTextChangedListener(new TextWatcher() {
@@ -92,19 +92,19 @@ public class NewNote extends AppCompatActivity {
             }
         });
 
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = noteTitle.getText().toString().trim();
-                String body = noteBody.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
-                    uploadNote(title, body);
-                } else {
-                    Snackbar.make(v, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        uploadBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String title = noteTitle.getText().toString().trim();
+//                String body = noteBody.getText().toString().trim();
+//
+//                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+//                    uploadNote(title, body);
+//                } else {
+//                    Snackbar.make(v, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         puData();
 
