@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassBtn = findViewById(R.id.user_forgot_btn);
         progressBar = findViewById(R.id.login_progress);
 
-        forgotPassBtn.setVisibility(View.INVISIBLE);
+
         progressBar.setVisibility(View.INVISIBLE);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +74,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+            }
+        });
+
+        forgotPassBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
             }
         });
 

@@ -59,17 +59,19 @@
          <TextView
              android:layout_height="wrap_content"
              android:layout_width="fill_parent"
-             android:id="@+id/move_to_register_screen"
-             android:text="Don't have an account? Create it now."
-             android:textColor="@android:color/white"
-             android:gravity="center"/>
+             android:id="@+id/user_forgot_btn"
+             android:text="Forgot password"
+             android:gravity="center"
+             android:textColor="@android:color/white"/>
 
          <TextView
              android:layout_height="wrap_content"
              android:layout_width="fill_parent"
-             android:id="@+id/user_forgot_btn"
-             android:text="Forgot password"
-             android:textColor="@android:color/white"/>
+             android:id="@+id/move_to_register_screen"
+             android:text="Don't have an account? Create it now."
+             android:textColor="@android:color/white"
+             android:gravity="center"
+             android:layout_marginBottom="15dp"/>
 
      </LinearLayout>
 
