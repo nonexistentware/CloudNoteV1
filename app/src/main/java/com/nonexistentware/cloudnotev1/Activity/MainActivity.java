@@ -112,13 +112,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
 
-        if (id == R.id.menu_drawer_register) {
-            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-        }
-
-        if (id == R.id.menu_drawer_login) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        }
+//        if (id == R.id.menu_drawer_register) {
+//            startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+//        }
+//
+//        if (id == R.id.menu_drawer_login) {
+//            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+//        }
 
         if (id == R.id.menu_drawer_signout) {
             FirebaseAuth.getInstance().signOut();

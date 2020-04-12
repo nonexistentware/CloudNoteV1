@@ -73,6 +73,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), "Password recovery was sent to your email", Toast.LENGTH_SHORT).show();
                 } else {
+                    submitBtn.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             }
