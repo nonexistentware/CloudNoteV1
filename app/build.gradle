@@ -8,8 +8,8 @@ android {
         applicationId "com.nonexistentware.cloudnotev1"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 13
-        versionName "2.1"
+        versionCode 14
+        versionName "2.2"
         multiDexEnabled
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

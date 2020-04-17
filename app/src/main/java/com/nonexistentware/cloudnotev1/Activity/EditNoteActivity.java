@@ -56,8 +56,6 @@ public class EditNoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
-//        Toolbar toolbar = findViewById(R.id.toolbar_edit_activity);
-//        setSupportActionBar(toolbar);
 
         try {
             noteId = getIntent().getStringExtra("noteId");
@@ -214,9 +212,9 @@ public class EditNoteActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Successfully uploaded to cloud.", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Failed while uploading to cloud.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
