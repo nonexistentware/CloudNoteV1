@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import com.squareup.picasso.Picasso;
 public class UserProfileActivity extends AppCompatActivity {
 
     private ImageView userImage;
-    private TextView userMail, removeAccountBtn, removeUserData, removeAccountData;
+    private TextView userMail, removeAccountBtn, removeUserData, signoutBtn;
 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
@@ -35,6 +36,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
     private AuthCredential credential;
+
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +50,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         removeAccountBtn = findViewById(R.id.user_remove_account); //remove only account
         removeUserData = findViewById(R.id.user_remove_data); //remove only user data, not account
-        removeAccountData = findViewById(R.id.user_remove_accountdata); //remove account and user data
+        signoutBtn = findViewById(R.id.user_sign_out);
 
-        removeAccountData.setVisibility(View.INVISIBLE);
+        progressBar = findViewById(R.id.user_profile_progress);
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -57,6 +60,8 @@ public class UserProfileActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
                 .child(auth.getCurrentUser().getUid());
+
+        progressBar.setVisibility(View.INVISIBLE);
 
         loadUserData();
 
@@ -107,12 +112,18 @@ public class UserProfileActivity extends AppCompatActivity {
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        removeUserData.setVisibility(View.INVISIBLE);
                         databaseReference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    removeUserData.setVisibility(View.VISIBLE);
                                     Toast.makeText(getApplicationContext(), "Data removed successfully", Toast.LENGTH_SHORT).show();
                                 } else {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    removeUserData.setVisibility(View.VISIBLE);
                                     Toast.makeText(getApplicationContext(), "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -128,6 +139,15 @@ public class UserProfileActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
+            }
+        });
+
+        signoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
         });
     }

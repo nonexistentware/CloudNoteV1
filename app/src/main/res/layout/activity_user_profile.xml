@@ -9,12 +9,17 @@
     android:orientation="vertical"
     android:background="@android:color/black">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_centerInParent="true">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_height="90dp"
@@ -40,6 +45,13 @@
         android:gravity="bottom"
         android:layout_marginBottom="15dp">
 
+        <ProgressBar
+            android:id="@+id/user_profile_progress"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -56,6 +68,15 @@
             android:gravity="center"
             android:textColor="@android:color/holo_red_light"/>
 
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/user_sign_out"
+            android:text="Sign out"
+            android:textColor="@android:color/holo_red_light"
+            android:gravity="center" />
+
     </LinearLayout>
+    </RelativeLayout>
 
     </LinearLayout>
