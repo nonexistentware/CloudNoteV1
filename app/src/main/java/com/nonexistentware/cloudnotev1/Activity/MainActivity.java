@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
 //        }
 
+        if (id == R.id.menu_drawer_user) {
+            startActivity(new Intent(this, UserProfileActivity.class));
+        }
+
         if (id == R.id.menu_drawer_signout) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));

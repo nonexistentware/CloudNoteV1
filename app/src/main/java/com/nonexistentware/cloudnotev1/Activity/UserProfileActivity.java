@@ -14,13 +14,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.nonexistentware.cloudnotev1.Common.Common;
 import com.nonexistentware.cloudnotev1.R;
 import com.squareup.picasso.Picasso;
 
@@ -34,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
+    private AuthCredential credential;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,16 +58,14 @@ public class UserProfileActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
                 .child(auth.getCurrentUser().getUid());
 
-
         loadUserData();
 
-        //remove account
         removeAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
-                dialog.setTitle("Do you really want to remove your account?");
-                dialog.setMessage("We only delete email. Your data won't be wiped from cloud");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this, R.style.alertDialog);
+                dialog.setTitle("Are you sure?");
+                dialog.setMessage("We remove all your data from cloud and account. Also remove data from device");
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -74,13 +73,14 @@ public class UserProfileActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Account successfully removed", Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                    finish();
+                                    Toast.makeText(UserProfileActivity.this, "Account and data successfully removed", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(UserProfileActivity.this, RegisterActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         });
                     }
@@ -92,7 +92,6 @@ public class UserProfileActivity extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-
                 AlertDialog alertDialog = dialog.create();
                 alertDialog.show();
             }
@@ -102,8 +101,8 @@ public class UserProfileActivity extends AppCompatActivity {
         removeUserData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
-                dialog.setTitle("Do you really want to remove your data?");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this, R.style.alertDialog);
+                dialog.setTitle("Are you sure?");
                 dialog.setMessage("This process will remove notes from cloud");
                 dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
@@ -131,51 +130,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
-        removeAccountData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(UserProfileActivity.this);
-                dialog.setTitle("111");
-                dialog.setMessage("111");
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Account removed successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Account removed successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-
-//    private void removeUserAccount() {
-//        currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if (task.isSuccessful()) {
-//                Toast.makeText(getApplicationContext(), "Account removed successfully", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-//                }
-//            }
-//        });
     }
-
-//    public void removeUserData() {
-//        firebaseDatabase.getReference("Users").child(currentUser.getUid()).child("email").removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                if (task.isSuccessful()) {
-//                    Toast.makeText(getApplicationContext(), "Data removed successfully", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
 
     private void loadUserData() {
         userMail.setText(auth.getCurrentUser().getEmail());
@@ -183,4 +138,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 .load(currentUser.getPhotoUrl())
                 .into(userImage);
     }
+
+
 }

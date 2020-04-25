@@ -4,6 +4,11 @@
         <menu>
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:title="Profile"
+            android:id="@+id/menu_drawer_user"/>
+
 <!--        <item-->
 <!--            android:title="Register"-->
 <!--            android:id="@+id/menu_drawer_register"/>-->
@@ -11,10 +16,6 @@
 <!--        <item-->
 <!--            android:title="Login"-->
 <!--            android:id="@+id/menu_drawer_login" />-->
-
-        <item
-            android:title=""
-            android:id="@+id/menu_drawer_register"/>
 
         <item
             android:title=""
