@@ -214,7 +214,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Successfully uploaded to cloud.", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Failed while uploading to cloud.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Failed while uploading to cloud." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

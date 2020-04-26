@@ -60,13 +60,13 @@
             android:textColor="@android:color/holo_red_light"
             android:gravity="center" />
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:id="@+id/user_remove_account"
-            android:text="Delete account and data"
-            android:gravity="center"
-            android:textColor="@android:color/holo_red_light"/>
+<!--        <TextView-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:id="@+id/user_remove_account"-->
+<!--            android:text="Delete account and data"-->
+<!--            android:gravity="center"-->
+<!--            android:textColor="@android:color/holo_red_light"/>-->
 
         <TextView
             android:layout_height="wrap_content"

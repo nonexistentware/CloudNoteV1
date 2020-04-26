@@ -75,7 +75,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 } else {
                     submitBtn.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getApplicationContext(), "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

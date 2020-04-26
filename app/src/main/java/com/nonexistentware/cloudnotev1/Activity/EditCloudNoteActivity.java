@@ -197,7 +197,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(getApplicationContext(), "Note added to database", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

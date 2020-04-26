@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             progressBar.setVisibility(View.INVISIBLE);
                             createUserBtn.setVisibility(View.VISIBLE);
-                            Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
