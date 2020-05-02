@@ -334,6 +334,7 @@ public class EditNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("title", noteTitle.getText().toString());
+        intent.putExtra("description", noteBody.getText().toString());
         startActivity(intent);
     }
 }

@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -300,6 +303,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
         intent.putExtra("title", cloudNoteTitle.getText().toString());
+        intent.putExtra("description", cloudNoteBody.getText().toString());
         startActivity(intent);
     }
 }
