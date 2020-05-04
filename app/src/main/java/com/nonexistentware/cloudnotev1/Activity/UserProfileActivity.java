@@ -3,9 +3,14 @@ package com.nonexistentware.cloudnotev1.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +31,7 @@ import com.squareup.picasso.Picasso;
 public class UserProfileActivity extends AppCompatActivity {
 
     private ImageView userImage;
-    private TextView userMail, removeAccountBtn, removeUserData, signoutBtn;
+    private TextView userMail, removeAccountBtn, removeUserData, signoutBtn, backupBtn, restoreBtn, backupStatus;
 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
@@ -37,6 +42,11 @@ public class UserProfileActivity extends AppCompatActivity {
     private String emailId;
 
     ProgressBar progressBar;
+
+    //check permission
+    private static final int STORAGE_REQUEST_CODE_EXPORT = 1;
+    private static final int STORAGE_REQUEST_CODE_IMPORT = 2;
+    private String[] storagePermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +60,12 @@ public class UserProfileActivity extends AppCompatActivity {
 //        removeAccountBtn = findViewById(R.id.user_remove_account); //remove only account
         removeUserData = findViewById(R.id.user_remove_data); //remove only user data, not account
         signoutBtn = findViewById(R.id.user_sign_out);
+
+        //data backup/restore
+        backupBtn = findViewById(R.id.backup_user_data);
+        restoreBtn = findViewById(R.id.resotre_user_data);
+        backupStatus = findViewById(R.id.backup_status);
+        storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         progressBar = findViewById(R.id.user_profile_progress);
 
@@ -140,6 +156,21 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == (PackageManager.PERMISSION_GRANTED);
+        return result;
+    }
+
+    private void requestStoragePermissionImport() {
+        ActivityCompat.requestPermissions(this, storagePermission, STORAGE_REQUEST_CODE_IMPORT);
+    }
+
+    private void requestStoragePermissionExport() {
+        ActivityCompat.requestPermissions(this, storagePermission, STORAGE_REQUEST_CODE_EXPORT);
+    }
+
     private void loadUserData() {
         userMail.setText(auth.getCurrentUser().getEmail());
         Picasso.with(this)
@@ -147,4 +178,34 @@ public class UserProfileActivity extends AppCompatActivity {
                 .into(userImage);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case STORAGE_REQUEST_CODE_EXPORT: {
+                if (grantResults.length > 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                    exportCSV();
+                } else {
+                    Toast.makeText(this, "Storage permission required...", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+            case STORAGE_REQUEST_CODE_IMPORT: {
+                if (grantResults.length > 0 && grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                    importCSV();
+                } else {
+                    Toast.makeText(this, "Storage permission required...", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+        }
+    }
+
+    private void exportCSV() {
+
+    }
+
+    private void importCSV() {
+        
+    }
 }
