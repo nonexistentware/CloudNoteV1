@@ -26,7 +26,6 @@ public class CloudNoteViewHolder extends RecyclerView.ViewHolder implements View
     ItemClickListener itemClickListener;
     
     TextView cloudNoteTitle, cloudNoteTime;
-    public ImageView removeBtn;
     public TextView noteTime, noteTitle;
     public ImageView noteImage;
 

@@ -60,7 +60,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     public class NoteViewHolder extends RecyclerView.ViewHolder implements ItemClickListener {
 
-
         TextView noteTitle, noteBody, noteDate, noteTime, noteId;
         private NoteDataBase ndb;
 
@@ -74,11 +73,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
             noteDate = itemView.findViewById(R.id.note_date_item);
             noteTime = itemView.findViewById(R.id.note_time_item);
-
             noteId = itemView.findViewById(R.id.listId);
-
-            ndb = new NoteDataBase(itemView.getContext());
-
 
 //            checkDbRecords();
 

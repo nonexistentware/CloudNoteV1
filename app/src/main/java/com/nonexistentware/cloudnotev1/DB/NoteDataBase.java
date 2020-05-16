@@ -181,7 +181,10 @@ public class NoteDataBase extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)});
 
         db.close();
-
         }
+
+    public void insertCsvData() {
+
     }
+}
 

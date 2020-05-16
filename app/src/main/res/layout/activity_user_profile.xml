@@ -36,33 +36,6 @@
         android:textColor="@android:color/white"
         android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:id="@+id/backup_user_data"
-            android:text="Backup data"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:id="@+id/resotre_user_data"
-            android:text="Restore data"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/backup_status"
-            android:text="Back up status"
-            android:textSize="17sp"
-            android:gravity="center"
-            android:textColor="@android:color/holo_red_light"/>
-
 
 </LinearLayout>
 
