@@ -2,21 +2,28 @@ package com.nonexistentware.cloudnotev1.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,9 +45,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditCloudNoteActivity extends AppCompatActivity {
+public class EditCloudNoteActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    private TextView removeBtn, saveBtn, saveSqlBtn, calendarBtn;
+    private TextView removeBtn, saveBtn;
     private EditText cloudNoteTitle, cloudNoteBody;
 
     private FirebaseAuth auth;
@@ -49,6 +56,8 @@ public class EditCloudNoteActivity extends AppCompatActivity {
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
+
+    public View v;
 
     private String noteId;
     private boolean isExist;
@@ -74,9 +83,7 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         cloudNoteBody = findViewById(R.id.body_cloud_note_edit_activity);
 
         saveBtn = findViewById(R.id.edit_cloud_note_save_btn);
-        saveSqlBtn = findViewById(R.id.edit_cloud_note_save_to_sql_btn);
         removeBtn = findViewById(R.id.edit_cloud_note_delete_btn);
-        calendarBtn = findViewById(R.id.edit_cloud_note_btn_export_calendar);
 
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("CloudNote")
@@ -120,34 +127,15 @@ public class EditCloudNoteActivity extends AppCompatActivity {
             }
         });
 
-        saveSqlBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveToSqlMethod();
-            }
-        });
-
-        calendarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exportToCalendar();
-            }
-        });
-
         calendar = Calendar.getInstance();
-        todayDate = calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
-        Log.d("DATE", "Date: "+todayDate);
-        currentTime = pad(calendar.get(Calendar.HOUR))+":"+pad(calendar.get(Calendar.MINUTE));
-        Log.d("TIME", "Time: "+currentTime);
+        todayDate = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
+        Log.d("DATE", "Date: " + todayDate);
+        currentTime = pad(calendar.get(Calendar.HOUR)) + ":" + pad(calendar.get(Calendar.MINUTE));
+        Log.d("TIME", "Time: " + currentTime);
 
         putData();
 
-//        saveBtn.setVisibility(View.GONE);
-//
-//        titleChange();
-//        bodyChange();
     }
-
 
     private void putData() {
         if (isExist) {
@@ -252,49 +240,11 @@ public class EditCloudNoteActivity extends AppCompatActivity {
 //            onBackPressed();
 
             progressDialog.dismiss();
-            Toast.makeText(this, "Note Saved.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Saved to device.", Toast.LENGTH_SHORT).show();
         } else {
             progressDialog.dismiss();
             cloudNoteTitle.setError("Title Can not be Blank.");
         }
-    }
-
-    private void titleChange() {
-        cloudNoteTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveBtn.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    private void bodyChange() {
-        cloudNoteBody.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveBtn.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private void exportToCalendar() {
@@ -305,5 +255,114 @@ public class EditCloudNoteActivity extends AppCompatActivity {
         intent.putExtra("title", cloudNoteTitle.getText().toString());
         intent.putExtra("description", cloudNoteBody.getText().toString());
         startActivity(intent);
+    }
+
+    private void showCloudNotification(Context context, String title, String body) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            NotificationChannel mChannel = new NotificationChannel("1", "cloudChannel", NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        SharedPreferences prefs = getSharedPreferences(EditNoteActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+        int notificationNumber = prefs.getInt("notificationNumber", 0);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")
+                .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true);
+        notificationManager.notify(notificationNumber, mBuilder.build());
+        SharedPreferences.Editor editor = prefs.edit();
+        notificationNumber++;
+        editor.putInt("notificationNumber", notificationNumber);
+        editor.commit();
+    }
+
+    public void showPopUpCloud(View v) {
+        Context wrapper = new ContextThemeWrapper(this, R.style.alertDialog);
+        PopupMenu popupMenu = new PopupMenu(wrapper, v);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.menu_bottom_cloud_bar);
+        popupMenu.show();
+    }
+
+    private void emailWithSubject() {
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        String[] recipients={};
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, cloudNoteTitle.getText().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, cloudNoteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_CC,"");
+        intent.setType("text/html");
+        intent.setPackage("com.google.android.gm");
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(EditCloudNoteActivity.this, "Can not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void emailNoSubject() {
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        String[] recipients={};
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(Intent.EXTRA_TEXT, cloudNoteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_CC,"");
+        intent.setType("text/html");
+        intent.setPackage("com.google.android.gm");
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(EditCloudNoteActivity.this, "Can not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createLetter() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.alertDialog);
+        dialog.setTitle("Do you want to create letter?");
+        dialog.setMessage("Create letter using note title as letter subject?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                emailWithSubject();
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                emailNoSubject();
+            }
+        });
+        dialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_note_add_calendar_cloud:
+                exportToCalendar();
+                return true;
+            case R.id.menu_note_download:
+                saveToSqlMethod();
+                return true;
+            case R.id.menu_note_notification_cloud:
+                String title = cloudNoteTitle.getText().toString();
+                String body = cloudNoteBody.getText().toString();
+                showCloudNotification(this, title, body);
+                return true;
+            case R.id.menu_note_cloud_email:
+                createLetter();
+                return true;
+        }
+        return false;
     }
 }

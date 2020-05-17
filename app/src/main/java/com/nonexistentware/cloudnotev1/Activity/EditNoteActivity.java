@@ -3,19 +3,24 @@ package com.nonexistentware.cloudnotev1.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,14 +43,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class EditNoteActivity extends AppCompatActivity {
+public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
 
     private EditText noteTitle, noteBody;
-    private TextView saveBtn, uploadBtn, deleteBtn, calendarBtn;
+    private TextView saveBtn, deleteBtn;
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
     long nid;
+
+    public View v;
 
     private FirebaseAuth auth;
     private DatabaseReference noteReference;
@@ -73,9 +80,7 @@ public class EditNoteActivity extends AppCompatActivity {
         noteTitle = findViewById(R.id.title_note_edit_activity);
         noteBody = findViewById(R.id.body_note_edit_activity);
         saveBtn = findViewById(R.id.editnote_btn_save);
-        uploadBtn = findViewById(R.id.editnote_btn_upload);
         deleteBtn = findViewById(R.id.editnote_btn_delete);
-        calendarBtn = findViewById(R.id.editnote_btn_export_calendar);
 
         Intent i = getIntent();
         nid = i.getLongExtra("ID", 0);
@@ -136,34 +141,19 @@ public class EditNoteActivity extends AppCompatActivity {
             }
         });
 
-        uploadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String title = noteTitle.getText().toString().trim();
-                String body = noteBody.getText().toString().trim();
-
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
-                    uploadNote(title, body);
-                } else {
-                    Snackbar.make(v, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        calendarBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exportToCalendar();
-            }
-        });
-
         putData();
 
-//        saveBtn.setVisibility(View.GONE);
-//
-//        titleChange(); //show save button
-//        bodyChange(); //show save button
+    }
 
+    public void uploadNote(View v) {
+        String title = noteTitle.getText().toString().trim();
+        String body = noteBody.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+            uploadNote(title, body);
+        } else {
+            Snackbar.make(v, "Заповніть порожні поля", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     public void putData() {
@@ -190,14 +180,6 @@ public class EditNoteActivity extends AppCompatActivity {
 
     public void uploadNote(String title, String body) {
         if (auth.getCurrentUser() != null) {
-//            if (isExist) {
-//                Map updateMap = new HashMap();
-//                updateMap.put("title", noteTitle.getText().toString().trim());
-//                updateMap.put("body", noteTitle.getText().toString().trim());
-//                updateMap.put("timestamp", ServerValue.TIMESTAMP);
-//
-//                noteReference.child(noteId).updateChildren(updateMap);
-
                 final DatabaseReference reference = noteReference.push();
 
                 final Map noteMap = new HashMap();
@@ -242,10 +224,6 @@ public class EditNoteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void goToMain() {
-//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-
-    }
 
     public void showAlert(Context aContext) {
         new AlertDialog.Builder(aContext)
@@ -277,57 +255,6 @@ public class EditNoteActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
-    private void titleChange() { //show save button
-        noteTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveBtn.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    private void bodyChange()  { //show save button
-        noteBody.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveBtn.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        String note = noteTitle.getText().toString();
-        String body = noteBody.getText().toString();
-
-        if (!TextUtils.isEmpty(note)) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        } else {
-            showAlert(this);
-        }
-    }
-
     private void exportToCalendar() {
         NoteItem noteItem = new NoteItem();
         Calendar calendarEvent = Calendar.getInstance();
@@ -336,6 +263,115 @@ public class EditNoteActivity extends AppCompatActivity {
         intent.putExtra("title", noteTitle.getText().toString());
         intent.putExtra("description", noteBody.getText().toString());
         startActivity(intent);
+    }
+
+    private void showCloudNotification(Context context, String title, String body) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            NotificationChannel mChannel = new NotificationChannel("1", "cloudChannel",NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        SharedPreferences prefs = getSharedPreferences(EditNoteActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+        int notificationNumber = prefs.getInt("notificationNumber", 0);
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")
+                .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setAutoCancel(true);
+        notificationManager.notify(notificationNumber, mBuilder.build());
+        SharedPreferences.Editor editor = prefs.edit();
+        notificationNumber++;
+        editor.putInt("notificationNumber", notificationNumber);
+        editor.commit();
+    }
+
+    public void showPopUp(View v) {
+        Context wrapper = new ContextThemeWrapper(this, R.style.alertDialog);
+        PopupMenu popupMenu = new PopupMenu(wrapper, v);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.inflate(R.menu.menu_bottom_bar);
+        popupMenu.show();
+    }
+
+    private void emailWithSubject() {
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        String[] recipients={};
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, noteTitle.getText().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, noteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_CC,"");
+        intent.setType("text/html");
+        intent.setPackage("com.google.android.gm");
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(EditNoteActivity.this, "На вашому пристрою не встанолений Gmail кліент.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void emailNoSubject() {
+        Intent intent=new Intent(Intent.ACTION_SEND);
+        String[] recipients={};
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "");
+        intent.putExtra(Intent.EXTRA_TEXT, noteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_CC,"");
+        intent.setType("text/html");
+        intent.setPackage("com.google.android.gm");
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(EditNoteActivity.this, "На вашому пристрою не встанолений Gmail кліент.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createLetter() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.alertDialog);
+        dialog.setTitle("Do you want to create letter?");
+        dialog.setMessage("Create letter using note title as letter subject?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                emailWithSubject();
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                emailNoSubject();
+            }
+        });
+        dialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_note_add_calendar:
+                exportToCalendar();
+                return true;
+            case R.id.menu_note_upload:
+                uploadNote(v);
+                return true;
+            case R.id.menu_note_notification:
+                String title = noteTitle.getText().toString();
+                String body = noteBody.getText().toString();
+                showCloudNotification(this, title, body);
+                return true;
+            case R.id.menu_note_email:
+                createLetter();
+                return true;
+        }
+        return false;
     }
 }
 

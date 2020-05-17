@@ -42,11 +42,21 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:weightSum="4"
+        android:weightSum="6"
         android:layout_margin="10dp">
 
+        <ImageView
+            android:layout_weight="2"
+            android:id="@+id/edit_note_expandable_menu"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_keyboard_arrow_up_white_24dp"
+            android:onClick="showPopUp"
+            android:layout_gravity="center"/>
+
         <TextView
-            android:layout_weight="1"
+            android:layout_weight="2"
+            android:gravity="center"
             android:id="@+id/editnote_btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,33 +66,10 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"/>
 
-        <TextView
-            android:gravity="center"
-            android:layout_weight="1"
-            android:id="@+id/editnote_btn_upload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Upload to cloud"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"/>
 
         <TextView
             android:gravity="center"
-            android:layout_weight="1"
-            android:id="@+id/editnote_btn_export_calendar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:text="Add to calendar"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"/>
-
-        <TextView
-            android:gravity="right"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:id="@+id/editnote_btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

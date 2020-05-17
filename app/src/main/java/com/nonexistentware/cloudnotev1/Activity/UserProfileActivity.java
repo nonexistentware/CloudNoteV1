@@ -30,16 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
-import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import com.nonexistentware.cloudnotev1.R;
-import com.opencsv.CSVReader;
 import com.squareup.picasso.Picasso;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserProfileActivity extends AppCompatActivity {
 
