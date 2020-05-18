@@ -149,10 +149,10 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         String title = noteTitle.getText().toString().trim();
         String body = noteBody.getText().toString().trim();
 
-        if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+        if (!TextUtils.isEmpty(title)) {
             uploadNote(title, body);
         } else {
-            Snackbar.make(v, "Заповніть порожні поля", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -306,7 +306,7 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditNoteActivity.this, "На вашому пристрою не встанолений Gmail кліент.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -322,7 +322,7 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditNoteActivity.this, "На вашому пристрою не встанолений Gmail кліент.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 

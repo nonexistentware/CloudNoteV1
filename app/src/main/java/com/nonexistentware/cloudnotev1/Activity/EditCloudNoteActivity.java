@@ -95,10 +95,11 @@ public class EditCloudNoteActivity extends AppCompatActivity implements PopupMen
                 String title = cloudNoteTitle.getText().toString().trim();
                 String body = cloudNoteBody.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(body)) {
+                if (!TextUtils.isEmpty(title)) {
                     editCloudNote(title, body);
                 } else {
-                    Snackbar.make(view, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Note title can't be empty.", Toast.LENGTH_SHORT).show();
+//                    Snackbar.make(view, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -298,7 +299,7 @@ public class EditCloudNoteActivity extends AppCompatActivity implements PopupMen
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditCloudNoteActivity.this, "Can not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditCloudNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -314,7 +315,7 @@ public class EditCloudNoteActivity extends AppCompatActivity implements PopupMen
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditCloudNoteActivity.this, "Can not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditCloudNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
