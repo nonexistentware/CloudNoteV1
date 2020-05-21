@@ -233,7 +233,7 @@ public class EditCloudNoteActivity extends AppCompatActivity implements PopupMen
 
         if (cloudNoteTitle.getText().length() != 0) {
             NoteItem note = new NoteItem(cloudNoteTitle.getText().toString(),
-                    cloudNoteTitle.getText().toString(), todayDate, currentTime);
+                    cloudNoteBody.getText().toString(), todayDate, currentTime);
             NoteDataBase nDB = new NoteDataBase(this);
             long id = nDB.addNote(note);
             NoteItem check = nDB.getNote(id);
