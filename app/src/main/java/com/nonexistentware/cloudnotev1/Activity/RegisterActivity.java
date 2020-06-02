@@ -110,75 +110,77 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createNewUser(final String mail, String pass) {
-            createUserBtn.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
+        createUserBtn.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         auth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && pickedImageUri == null) {
+                            updateUserInfo(mail, auth.getCurrentUser());
+                            progressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
+                        } else if (task.isSuccessful() && pickedImageUri != null){
                             progressBar.setVisibility(View.INVISIBLE);
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
-                            updateUserInfo(mail, pickedImageUri, auth.getCurrentUser());
+                            createProfileWithImage(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else {
                             progressBar.setVisibility(View.INVISIBLE);
                             createUserBtn.setVisibility(View.VISIBLE);
-                            Toast.makeText(RegisterActivity.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void updateUserInfo(final String email, Uri pickedImageUri, final FirebaseUser currentUser) {
+    //no profile img
+    private void updateUserInfo(final String email, final FirebaseUser currentUser) {
+        final UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                .setDisplayName(email)
+                .build();
+        currentUser.updateProfile(profileUpdate)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            updateUi();
+                        }
+                    }
+                });
+    }
 
+    //with profile img
+    private void createProfileWithImage(final String email, final Uri pickedImageUri, final FirebaseUser currentUser) {
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
         final StorageReference imageFilePath = mStorage.child(pickedImageUri.getLastPathSegment());
         imageFilePath.putFile(pickedImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                // image uploaded succesfully
-                // now we can get our image url
-
                 imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-
-                        // uri contain user image url
-
-
-                        UserProfileChangeRequest profleUpdate = new UserProfileChangeRequest.Builder()
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(email)
                                 .setPhotoUri(uri)
                                 .build();
 
-
-                        currentUser.updateProfile(profleUpdate)
+                        currentUser.updateProfile(profileUpdate)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-
                                         if (task.isSuccessful()) {
                                             // user info updated successfully
 //                                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
 //                                            showMessage("Register Complete");
                                             updateUi();
                                         }
-
                                     }
                                 });
-
                     }
                 });
-
-
-
-
-
             }
         });
-
     }
 
 

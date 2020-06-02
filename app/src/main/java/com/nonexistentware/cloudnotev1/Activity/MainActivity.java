@@ -187,14 +187,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
-            super.onBackPressed();
-            return;
-        }
-        else {
-            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
-        }
-        mBackPressed = System.currentTimeMillis();
     }
 }
