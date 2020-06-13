@@ -117,8 +117,9 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful() && pickedImageUri == null) {
-                            updateUserInfo(mail, auth.getCurrentUser());
                             progressBar.setVisibility(View.INVISIBLE);
+                            updateUserInfo(mail, auth.getCurrentUser());
+                            fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful() && pickedImageUri != null){
                             progressBar.setVisibility(View.INVISIBLE);
