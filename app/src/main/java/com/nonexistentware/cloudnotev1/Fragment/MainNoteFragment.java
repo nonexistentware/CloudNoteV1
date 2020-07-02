@@ -3,8 +3,6 @@ package com.nonexistentware.cloudnotev1.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nonexistentware.cloudnotev1.Activity.NewNote;
 import com.nonexistentware.cloudnotev1.Adapter.NoteAdapter;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
@@ -37,12 +35,11 @@ public class MainNoteFragment extends Fragment{
     private NoteDataBase noteDataBase;
     private FloatingActionButton fab;
 
-    public RecyclerView recyclerView2;
     public RecyclerView.LayoutManager layoutManager;
 
-    MaterialSearchBar materialSearchBar;
-    List<String> suggestList = new ArrayList<>();
     NoteDataBase dataBase;
+
+    private FirebaseAuth auth;
 
     private List<NoteItem> noteList = new ArrayList<>();
     long id;
@@ -57,59 +54,12 @@ public class MainNoteFragment extends Fragment{
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        //search section
-//        recyclerView2 = itemView.findViewById(R.id.recycler_search);
+        auth = FirebaseAuth.getInstance();
+
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        materialSearchBar = itemView.findViewById(R.id.search_edit_text_fragment);
         dataBase = new NoteDataBase(getContext());
-        materialSearchBar.setHint("Enter note title");
-        materialSearchBar.setTextHintColor(R.color.common_google_signin_btn_text_dark);
-//        loadSuggestList();
-        materialSearchBar.addTextChangeListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                List<String> suggest = new ArrayList<>();
-//                for (String search:suggestList) {
-//                    if (search.toLowerCase().contains(materialSearchBar.getText().toLowerCase()));
-//                }
-//                materialSearchBar.setLastSuggestions(suggest);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
-            @Override
-            public void onSearchStateChanged(boolean enabled) {
-                if (!enabled) {
-                    adapter = new NoteAdapter(getActivity().getBaseContext(), dataBase.getAllNotes());
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                }
-
-            }
-
-            @Override
-            public void onSearchConfirmed(CharSequence text) {
-                startSearch(text.toString());
-            }
-
-            @Override
-            public void onButtonClicked(int buttonCode) {
-
-            }
-        });
-
-        materialSearchBar.setVisibility(View.INVISIBLE);
 
         adapter = new NoteAdapter(getContext(), dataBase.getAllNotes());
         recyclerView.setAdapter(adapter);
@@ -140,24 +90,24 @@ public class MainNoteFragment extends Fragment{
             noItemText.setVisibility(View.INVISIBLE);
             displayList(allNotes);
         }
+
+        loadUserData();
         return itemView;
-    }
-
-    //search section
-    private void startSearch(String text) {
-        adapter = new NoteAdapter(getContext(), dataBase.getNoteByTitle(text));
-        recyclerView.setAdapter(adapter);
-    }
-
-    public void loadSuggestList() {
-        suggestList = dataBase.getNotes();
-        materialSearchBar.setLastSuggestions(suggestList);
     }
 
     private void displayList(List<NoteItem> allNotes) {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new NoteAdapter(getContext() , allNotes);
         recyclerView.setAdapter(adapter);
+    }
+
+    private void loadUserData() {
+        if (auth.getCurrentUser() != null) {
+
+        } else {
+            if (auth.getCurrentUser() == null) {
+            }
+        }
     }
 
     @Override

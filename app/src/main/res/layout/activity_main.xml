@@ -14,16 +14,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/main_toolbar"
-                android:background="@android:color/black"
-                android:layout_width="fill_parent"
-                android:layout_height="?actionBarSize"/>
-        </com.google.android.material.appbar.AppBarLayout>
-
         <RelativeLayout android:layout_width="fill_parent"
             android:layout_height="fill_parent">
             <FrameLayout android:id="@+id/frame_layout_main"
@@ -37,19 +27,10 @@
                 android:layout_alignParentBottom="true"
                 app:menu="@menu/menu"
                 app:itemIconTint="@android:color/white"
-                app:itemTextColor="@android:color/white" />
+                app:itemTextColor="@android:color/white"
+                />
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:layout_gravity="start"
-        android:id="@+id/nav_view_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        app:headerLayout="@layout/drawer_nav_header"
-        app:menu="@menu/menu_activity_drawer"
-        android:background="@android:color/black"
-        app:itemTextColor="@android:color/white"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.UserFragment"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_centerInParent="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_height="90dp"
+                    android:layout_width="90dp"
+                    android:id="@+id/user_profile_image"/>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:id="@+id/user_profile_mail"
+                    android:text="User email"
+                    android:textSize="17sp"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:layout_marginBottom="10dp"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:weightSum="2"
+                android:layout_marginBottom="95dp">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/login_btn"
+                    android:text="Login"
+                    android:textColor="@android:color/white"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/register_btn"
+                    android:text="Register"
+                    android:textColor="@android:color/white"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:layout_marginBottom="65dp">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:id="@+id/user_sign_out"
+                        android:text="Sign out"
+                        android:textColor="@android:color/holo_red_light"
+                        android:gravity="center" />
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</FrameLayout>

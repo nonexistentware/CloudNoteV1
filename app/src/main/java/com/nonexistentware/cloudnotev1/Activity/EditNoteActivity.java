@@ -92,7 +92,7 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
 
 
         auth = FirebaseAuth.getInstance();
-        noteReference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
+
 
         noteTitle.setText(title);
         noteBody.setText(body);
@@ -146,6 +146,9 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
     }
 
     public void uploadNote(View v) {
+        if (auth.getCurrentUser() != null) {
+        noteReference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
+
         String title = noteTitle.getText().toString().trim();
         String body = noteBody.getText().toString().trim();
 
@@ -153,6 +156,9 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
             uploadNote(title, body);
         } else {
             Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
+        }
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
