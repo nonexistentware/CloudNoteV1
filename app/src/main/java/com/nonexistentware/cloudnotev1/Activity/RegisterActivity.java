@@ -50,9 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     static int PReqCode = 1;
     static int REQUESCODE = 1;
 
-    //double tab exit
-    private static final int TIME_INTERVAL = 2000;
-    private long mBackPressed;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,17 +223,5 @@ public class RegisterActivity extends AppCompatActivity {
             pickedImageUri = data.getData();
             userImg.setImageURI(pickedImageUri);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
-            super.onBackPressed();
-            return;
-        } else {
-            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
-        }
-        mBackPressed = System.currentTimeMillis();
     }
  }
