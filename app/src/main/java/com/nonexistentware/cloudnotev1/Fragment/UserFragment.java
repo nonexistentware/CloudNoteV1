@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.nonexistentware.cloudnotev1.Activity.ForgotPasswordActivity;
 import com.nonexistentware.cloudnotev1.Activity.LoginActivity;
 import com.nonexistentware.cloudnotev1.Activity.RegisterActivity;
 import com.nonexistentware.cloudnotev1.R;
@@ -27,7 +28,7 @@ import com.squareup.picasso.Picasso;
 public class UserFragment extends Fragment {
 
     private ImageView userImage;
-    private TextView userMail, signoutBtn, loginBtn, registerBtn;
+    private TextView userMail, signoutBtn, loginBtn, registerBtn, forgotBtn;
 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
@@ -45,6 +46,7 @@ public class UserFragment extends Fragment {
 
         loginBtn = itemView.findViewById(R.id.login_btn);
         registerBtn = itemView.findViewById(R.id.register_btn);
+        forgotBtn = itemView.findViewById(R.id.forgot_btn);
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -60,6 +62,13 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), RegisterActivity.class));
+            }
+        });
+
+        forgotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ForgotPasswordActivity.class));
             }
         });
 

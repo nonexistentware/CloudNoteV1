@@ -47,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="bottom"
-                android:weightSum="2"
+                android:weightSum="3"
                 android:layout_marginBottom="95dp">
 
                 <TextView
@@ -65,6 +65,15 @@
                     android:layout_width="match_parent"
                     android:id="@+id/register_btn"
                     android:text="Register"
+                    android:textColor="@android:color/white"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/forgot_btn"
+                    android:text="Forgot your password?"
                     android:textColor="@android:color/white"
                     android:gravity="center" />
 
