@@ -33,7 +33,7 @@ import java.util.Locale;
 public class NewNote extends AppCompatActivity {
 
     private EditText noteTitle, noteBody;
-    private TextView saveBtn, uploadBtn;
+    private TextView saveBtn;
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
@@ -44,8 +44,6 @@ public class NewNote extends AppCompatActivity {
     static int PReqCode = 1;
     static int REQUESCODE = 1;
 
-    private FirebaseAuth auth;
-    private DatabaseReference noteReference;
     private String noteId;
     private boolean isExist;
 
@@ -55,9 +53,6 @@ public class NewNote extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_note);
 
-        auth = FirebaseAuth.getInstance();
-        noteReference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
-
         noteTitle = findViewById(R.id.title_note_new_activity);
         noteBody = findViewById(R.id.body_note_new_activity);
 
@@ -65,9 +60,6 @@ public class NewNote extends AppCompatActivity {
         //mic
         titleMic = findViewById(R.id.new_note_title_mic_btn);
         bodyMic = findViewById(R.id.new_note_body_mic_btn);
-
-//        uploadBtn = findViewById(R.id.new_note_upload_btn);
-//        removeFab = findViewById(R.id.delete_fab_note_btn);
 
         titleMic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +82,6 @@ public class NewNote extends AppCompatActivity {
             }
         });
 
-        puData();
-
         calendar = Calendar.getInstance();
         todayDate = calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH);
         Log.d("DATE", "Date: "+todayDate);
@@ -106,33 +96,7 @@ public class NewNote extends AppCompatActivity {
 
     }
 
-    public void puData() {
-        if (isExist) {
-            noteReference.child(noteId).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("body")) {
-                        String title = dataSnapshot.child("title").getValue().toString();
-                        String body = dataSnapshot.child("body").getValue().toString();
-
-                        noteTitle.setText(title);
-                        noteBody.setText(body);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
     public void saveNewNote() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Uploading note...");
-        progressDialog.show();
-
 
         if (noteTitle.getText().length() != 0) {
             NoteItem note = new NoteItem(noteTitle.getText().toString(),
@@ -142,11 +106,8 @@ public class NewNote extends AppCompatActivity {
             NoteItem check = nDB.getNote(id);
             Log.d("inserted", "Note: " + id + " -> Title:" + check.getNoteTitle() + " Date: " + check.getDate());
             onBackPressed();
-
-            progressDialog.dismiss();
             Toast.makeText(this, "Note Saved.", Toast.LENGTH_SHORT).show();
         } else {
-            progressDialog.dismiss();
             noteTitle.setError("Title Can not be Blank.");
         }
 
