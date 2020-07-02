@@ -90,6 +90,7 @@ public class UserFragment extends Fragment {
                         signoutBtn.setVisibility(View.INVISIBLE);
                         loginBtn.setVisibility(View.VISIBLE);
                         registerBtn.setVisibility(View.VISIBLE);
+                        forgotBtn.setVisibility(View.VISIBLE);
                         Picasso.with(getContext())
                                 .load(R.drawable.user_account_white)
                                 .into(userImage);
@@ -109,6 +110,7 @@ public class UserFragment extends Fragment {
             userMail.setText(currentUser.getEmail());
             loginBtn.setVisibility(View.INVISIBLE);
             registerBtn.setVisibility(View.INVISIBLE);
+            forgotBtn.setVisibility(View.INVISIBLE);
             Picasso.with(getContext())
                     .load(currentUser.getPhotoUrl())
                     .into(userImage);

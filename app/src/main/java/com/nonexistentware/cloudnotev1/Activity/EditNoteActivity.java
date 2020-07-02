@@ -230,31 +230,6 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void showAlert(Context aContext) {
-        new AlertDialog.Builder(aContext)
-                .setTitle("Delete")
-                .setMessage("")
-                .setMessage("Discard")
-                .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                    }
-                })
-
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-
-                .show();
-
-
-    }
-
     private void deleteNote() {
         NoteDataBase db = new NoteDataBase(getApplicationContext());
         db.deleteNote(nid);
