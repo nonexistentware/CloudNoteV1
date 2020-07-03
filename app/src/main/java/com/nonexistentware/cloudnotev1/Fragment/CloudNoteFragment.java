@@ -77,6 +77,12 @@ public class CloudNoteFragment extends Fragment{
         loadUserData();
         loadDate();
 
+        if (auth.getCurrentUser() == null) {
+            noCloudItemTxt.setVisibility(View.VISIBLE);
+        } else {
+            noCloudItemTxt.setVisibility(View.INVISIBLE);
+
+        }
 
         return itemView;
     }

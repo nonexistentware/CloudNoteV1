@@ -18,13 +18,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+            android:layout_margin="15dp">
 
         <TextView
             android:id="@+id/noCloudItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='List is empty. Add New notes using " + "'
+            android:text='You can not see content of cloud storage. Create account or login to proceed.'
             android:textColor="@android:color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
