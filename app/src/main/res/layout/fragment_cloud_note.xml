@@ -25,7 +25,7 @@
             android:id="@+id/noCloudItemText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text='You can not see content of cloud storage. Create account or login to proceed.'
+            android:text='Register or login to see data from cloud storage'
             android:textColor="@android:color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
