@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Add to calendar"
-        android:id="@+id/menu_note_add_calendar_cloud"/>
-
-    <item
         android:title="Download to device"
         android:id="@+id/menu_note_download"/>
+
+    <item
+        android:title="Add to calendar"
+        android:id="@+id/menu_note_add_calendar_cloud"/>
 
     <item
         android:title="Add to notification"
