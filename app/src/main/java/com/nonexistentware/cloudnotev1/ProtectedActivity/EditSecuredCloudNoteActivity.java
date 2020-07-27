@@ -1,12 +1,13 @@
-package com.nonexistentware.cloudnotev1.Activity;
+package com.nonexistentware.cloudnotev1.ProtectedActivity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +17,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.nonexistentware.cloudnotev1.Activity.EditNoteActivity;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
 import com.nonexistentware.cloudnotev1.DB.SecuredDataBase;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
@@ -43,27 +43,27 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+public class EditSecuredCloudNoteActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+    private TextView removeBtn, saveBtn;
+    private EditText cloudNoteTitle, cloudNoteBody;
 
-    private EditText noteTitle, noteBody;
-    private TextView saveBtn, deleteBtn;
+    private FirebaseAuth auth;
+    private DatabaseReference databaseReference;
+
     private Calendar calendar;
     private String todayDate;
     private String currentTime;
-    long nid;
 
     public View v;
 
-    private FirebaseAuth auth;
-    private DatabaseReference noteReference;
     private String noteId;
     private boolean isExist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_note);
+        setContentView(R.layout.activity_edit_secured_cloud);
 
         try {
             noteId = getIntent().getStringExtra("noteId");
@@ -73,30 +73,58 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
             } else {
                 isExist = false;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        noteTitle = findViewById(R.id.title_note_edit_activity);
-        noteBody = findViewById(R.id.body_note_edit_activity);
-        saveBtn = findViewById(R.id.editnote_btn_save);
-        deleteBtn = findViewById(R.id.editnote_btn_delete);
+        cloudNoteTitle = findViewById(R.id.title_secured_cloud_note_edit_activity);
+        cloudNoteBody = findViewById(R.id.body_secured_cloud_note_edit_activity);
 
-        Intent i = getIntent();
-        nid = i.getLongExtra("ID", 0);
-        NoteDataBase ndb = new NoteDataBase(this);
-        NoteItem note = ndb.getNote(nid);
-
-        final String title = note.getNoteTitle();
-        String body = note.getNoteBody();
-
+        saveBtn = findViewById(R.id.edit_secured_cloud_note_save_btn);
+        removeBtn = findViewById(R.id.edit_secured_cloud_note_delete_btn);
 
         auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("SecuredCloudNote")
+                .child(auth.getCurrentUser().getUid());
 
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = cloudNoteTitle.getText().toString().trim();
+                String body = cloudNoteBody.getText().toString().trim();
 
-        noteTitle.setText(title);
-        noteBody.setText(body);
+                if (!TextUtils.isEmpty(title)) {
+                    editCloudNote(title, body);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Note title can't be empty.", Toast.LENGTH_SHORT).show();
+//                    Snackbar.make(view, "Fill empty fields", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(EditSecuredCloudNoteActivity.this, R.style.alertDialog);
+                dialog.setTitle("Remove cloud note");
+                dialog.setMessage("Do you want to remove this note from cloud?");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteCloudNote();
+                        onBackPressed();
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = dialog.create();
+                alert.show();
+            }
+        });
 
         calendar = Calendar.getInstance();
         todayDate = calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH) + 1) + "/" + calendar.get(Calendar.DAY_OF_MONTH);
@@ -104,77 +132,21 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         currentTime = pad(calendar.get(Calendar.HOUR)) + ":" + pad(calendar.get(Calendar.MINUTE));
         Log.d("TIME", "Time: " + currentTime);
 
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NoteItem note = new NoteItem(nid, noteTitle.getText().toString(),
-                        noteBody.getText().toString(), todayDate, currentTime);
-                NoteDataBase ndb = new NoteDataBase(getApplicationContext());
-                long id = ndb.editNote(note);
-
-                Toast.makeText(getApplicationContext(), "Note updated", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               AlertDialog.Builder dialog = new AlertDialog.Builder(EditNoteActivity.this, R.style.alertDialog);
-                dialog.setTitle("Remove note");
-                dialog.setMessage("Do you want to remove this note from your device?");
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteNote();
-                        onBackPressed();
-                    }
-                });
-
-                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = dialog.create();
-                alertDialog.show();
-            }
-        });
-
         putData();
 
     }
 
-    public void uploadNote(View v) {
-        if (auth.getCurrentUser() != null) {
-        noteReference = FirebaseDatabase.getInstance().getReference().child("CloudNote").child(auth.getCurrentUser().getUid());
-
-        String title = noteTitle.getText().toString().trim();
-        String body = noteBody.getText().toString().trim();
-
-        if (!TextUtils.isEmpty(title)) {
-            uploadNote(title, body);
-            Toast.makeText(getApplicationContext(), "Successfully uploaded to cloud.", Toast.LENGTH_SHORT).show();
-        } else {
-            Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
-        }
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-    }
-
-    public void putData() {
+    private void putData() {
         if (isExist) {
-            noteReference.child(noteId).addValueEventListener(new ValueEventListener() {
+            databaseReference.child(noteId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("body")) {
                         String title = dataSnapshot.child("title").getValue().toString();
                         String body = dataSnapshot.child("body").getValue().toString();
 
-                        noteTitle.setText(title);
-                        noteBody.setText(body);
+                        cloudNoteTitle.setText(title);
+                        cloudNoteBody.setText(body);
                     }
                 }
 
@@ -186,9 +158,20 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         }
     }
 
-    public void uploadNote(String title, String body) {
+    private void editCloudNote(String title, String body) {
         if (auth.getCurrentUser() != null) {
-                final DatabaseReference reference = noteReference.push();
+            if (isExist) {
+                Map updateNoteMap = new HashMap();
+                updateNoteMap.put("title", cloudNoteTitle.getText().toString().trim());
+                updateNoteMap.put("body", cloudNoteBody.getText().toString().trim());
+                updateNoteMap.put("timestamp", ServerValue.TIMESTAMP);
+
+                databaseReference.child(noteId).updateChildren(updateNoteMap);
+
+                Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
+            } else {
+
+                final DatabaseReference cloudNoteRef = databaseReference.push();
 
                 final Map noteMap = new HashMap();
                 noteMap.put("title", title);
@@ -198,13 +181,13 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
                 Thread mainThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        reference.setValue(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        cloudNoteRef.setValue(noteMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(getApplicationContext(), "Successfully uploaded to cloud.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Note added to database", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "Failed while uploading to cloud." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -212,30 +195,55 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
                 });
                 mainThread.start();
             }
+        } else {
+            Toast.makeText(this, "USERS IS NOT SIGNED IN", Toast.LENGTH_SHORT).show();
         }
-
+    }
 
     private String pad(int time) {
-        if (time < 10)
-            return "0" + time;
+        if(time < 10)
+            return "0"+time;
         return String.valueOf(time);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+    private void deleteCloudNote() {
+        databaseReference.child(noteId).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
+                    noteId = "no";
+                    finish();
+                } else {
+                    Log.e("NewNoteActivity", task.getException().toString());
+                    Toast.makeText(getApplicationContext(), "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
+    private void saveToSqlMethod() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Uploading note...");
+        progressDialog.show();
 
-    private void deleteNote() {
-        NoteDataBase db = new NoteDataBase(getApplicationContext());
-        db.deleteNote(nid);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+        if (cloudNoteTitle.getText().length() != 0) {
+            NoteItem note = new NoteItem(cloudNoteTitle.getText().toString(),
+                    cloudNoteBody.getText().toString(), todayDate, currentTime);
+            SecuredDataBase nDB = new SecuredDataBase(this);
+            long id = nDB.addNote(note);
+            NoteItem check = nDB.getNote(id);
+            Log.d("inserted", "Note: " + id + " -> Title:" + check.getNoteTitle() + " Date: " + check.getDate());
+//            onBackPressed();
+
+            progressDialog.dismiss();
+            Toast.makeText(this, "Saved to device.", Toast.LENGTH_SHORT).show();
+        } else {
+            progressDialog.dismiss();
+            cloudNoteTitle.setError("Title Can not be Blank.");
+        }
     }
 
     private void exportToCalendar() {
@@ -243,19 +251,19 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         Calendar calendarEvent = Calendar.getInstance();
         Intent intent = new Intent(Intent.ACTION_EDIT);
         intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("title", noteTitle.getText().toString());
-        intent.putExtra("description", noteBody.getText().toString());
+        intent.putExtra("title", cloudNoteTitle.getText().toString());
+        intent.putExtra("description", cloudNoteBody.getText().toString());
         startActivity(intent);
     }
 
     private void showCloudNotification(Context context, String title, String body) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            NotificationChannel mChannel = new NotificationChannel("1", "cloudChannel",NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel mChannel = new NotificationChannel("1", "cloudChannel", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(mChannel);
         }
 
-        SharedPreferences prefs = getSharedPreferences(EditNoteActivity.class.getSimpleName(), Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(EditSecuredCloudNoteActivity.class.getSimpleName(), Context.MODE_PRIVATE);
         int notificationNumber = prefs.getInt("notificationNumber", 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")
                 .setSmallIcon(R.drawable.ic_add_alert_white_24dp)
@@ -269,11 +277,11 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         editor.commit();
     }
 
-    public void showPopUp(View v) {
+    public void showPopUpCloud(View v) {
         Context wrapper = new ContextThemeWrapper(this, R.style.alertDialog);
         PopupMenu popupMenu = new PopupMenu(wrapper, v);
         popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.inflate(R.menu.menu_bottom_bar);
+        popupMenu.inflate(R.menu.menu_bottom_secured_cloud);
         popupMenu.show();
     }
 
@@ -281,15 +289,15 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         Intent intent=new Intent(Intent.ACTION_SEND);
         String[] recipients={};
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
-        intent.putExtra(Intent.EXTRA_SUBJECT, noteTitle.getText().toString());
-        intent.putExtra(Intent.EXTRA_TEXT, noteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_SUBJECT, cloudNoteTitle.getText().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, cloudNoteBody.getText().toString());
         intent.putExtra(Intent.EXTRA_CC,"");
         intent.setType("text/html");
         intent.setPackage("com.google.android.gm");
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditSecuredCloudNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -298,14 +306,14 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         String[] recipients={};
         intent.putExtra(Intent.EXTRA_EMAIL, recipients);
         intent.putExtra(Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(Intent.EXTRA_TEXT, noteBody.getText().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, cloudNoteBody.getText().toString());
         intent.putExtra(Intent.EXTRA_CC,"");
         intent.setType("text/html");
         intent.setPackage("com.google.android.gm");
         try {
             startActivity(Intent.createChooser(intent, "Send mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(EditNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditSecuredCloudNoteActivity.this, "Could not detect Gmail on your device.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -336,55 +344,24 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
         alertDialog.show();
     }
 
-    private void moveToSecuredSQL() {
-        NoteItem note = new NoteItem(nid, noteTitle.getText().toString(),
-                noteBody.getText().toString(), todayDate, currentTime);
-        SecuredDataBase sdb = new SecuredDataBase(getApplicationContext());
-        long id = sdb.editNote(note);
-        Toast.makeText(getApplicationContext(), "Note successfully moved to protected database", Toast.LENGTH_SHORT).show();
-    }
-
-    private void uploadToSecured(View v) {
-        if (auth.getCurrentUser() != null) {
-            noteReference = FirebaseDatabase.getInstance().getReference().child("SecuredCloudNote").child(auth.getCurrentUser().getUid());
-
-            String title = noteTitle.getText().toString().trim();
-            String body = noteBody.getText().toString().trim();
-
-            if (!TextUtils.isEmpty(title)) {
-                uploadNote(title, body);
-            } else {
-                Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
-            }
-        } else {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-    }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_note_add_calendar:
+            case R.id.menu_secured_note_add_calendar:
                 exportToCalendar();
                 return true;
-            case R.id.menu_note_upload:
-                uploadNote(v);
+            case R.id.menu_secured_note_download_secured:
+                saveToSqlMethod();
                 return true;
-            case R.id.menu_note_notification:
-                String title = noteTitle.getText().toString();
-                String body = noteBody.getText().toString();
+            case R.id.menu_secured_note_notification:
+                String title = cloudNoteTitle.getText().toString();
+                String body = cloudNoteBody.getText().toString();
                 showCloudNotification(this, title, body);
                 return true;
-            case R.id.menu_note_email:
+            case R.id.menu_secured_note_email:
                 createLetter();
                 return true;
-            case R.id.menu_note_move_secured_storage:
-                moveToSecuredSQL();
-                return true;
-            case R.id.menu_note_upload_secured_cloud:
-                uploadToSecured(v);
         }
         return false;
     }
 }
-

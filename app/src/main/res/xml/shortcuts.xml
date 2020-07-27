@@ -13,5 +13,18 @@
              here. The last intent in the list determines what the user sees when
              they launch this shortcut. -->
     </shortcut>
+
+    <shortcut
+        android:shortcutId="New secured note"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_lock__black_24"
+        android:shortcutShortLabel="@string/newSecuredNote"
+        android:shortcutLongLabel="@string/newSecuredNote">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.nonexistentware.cloudnotev1"
+            android:targetClass="com.nonexistentware.cloudnotev1.ProtectedActivity.WarningScreenActivity" />
+    </shortcut>
     <!-- Specify more shortcuts here. -->
+
 </shortcuts>

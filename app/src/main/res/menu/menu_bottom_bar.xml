@@ -6,6 +6,14 @@
         android:id="@+id/menu_note_upload"/>
 
     <item
+        android:title="Upload to protected cloud"
+        android:id="@+id/menu_note_upload_secured_cloud"/>
+
+    <item
+        android:title="Move to protected storage"
+        android:id="@+id/menu_note_move_secured_storage"/>
+
+    <item
         android:title="Add to calendar"
         android:id="@+id/menu_note_add_calendar"/>
 

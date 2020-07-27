@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Download to protected device"
+        android:id="@+id/menu_secured_note_download_secured"/>
+
+    <item
+        android:title="Add to calendar"
+        android:id="@+id/menu_secured_note_add_calendar"/>
+
+    <item
+        android:title="Add to notification"
+        android:id="@+id/menu_secured_note_notification"/>
+
+    <item
+        android:title="Create email"
+        android:id="@+id/menu_secured_note_email"/>
+
+</menu>

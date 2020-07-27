@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:icon="@drawable/ic_dashboard_white_24dp"
+        android:id="@+id/secured_dashboard_menu"
+        android:title="Protected device"/>
+
+    <item android:icon="@drawable/ic_cloud_queue_white_24dp"
+        android:id="@+id/secured_cloud_menu"
+        android:title="Protected cloud"/>
+
+    <item android:icon="@drawable/ic_account_circle_black_24dp"
+        android:id="@+id/secured_account_menu"
+        android:title="Account"/>
+
+</menu>

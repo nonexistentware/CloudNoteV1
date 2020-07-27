@@ -43,6 +43,19 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_secured_memo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="140dp"
+                android:layout_marginRight="19dp"
+                android:src="@drawable/ic_baseline_lock__black_24"
+                app:fabSize="mini"
+                android:backgroundTint="@android:color/white"
+                android:tint="@android:color/black"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_new_note_activity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

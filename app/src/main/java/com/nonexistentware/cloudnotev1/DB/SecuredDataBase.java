@@ -13,17 +13,16 @@ import com.nonexistentware.cloudnotev1.Model.NoteItem;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class NoteDataBase extends SQLiteOpenHelper {
+public class SecuredDataBase extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "NoteDB.db";
-    public static final String TABLE_NAME = "note_db";
+    public static final String DATABASE_NAME = "SecuredNoteDB.db";
+    public static final String TABLE_NAME = "secured_note_db";
 
     private static String DATABASE_PATH;
     private Context myContext;
 
-    public NoteDataBase(Context context) { //change context to my myContext
+    public SecuredDataBase (Context context) { //change context to my myContext
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -73,15 +72,15 @@ public class NoteDataBase extends SQLiteOpenHelper {
         if (cursor != null)
             cursor.moveToFirst();
 
-            return new NoteItem(
-                    Long.parseLong(cursor.getString(0)),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4));
+        return new NoteItem(
+                Long.parseLong(cursor.getString(0)),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4));
 
-        }
-        //get all notes
+    }
+    //get all notes
     public List<NoteItem> getAllNotes(){
         List<NoteItem> allNotes = new ArrayList<>();
         String query = "SELECT * FROM " + TABLE_NAME+" ORDER BY "+KEY_ID+" DESC";
@@ -181,7 +180,6 @@ public class NoteDataBase extends SQLiteOpenHelper {
                 new String[]{String.valueOf(id)});
 
         db.close();
-        }
+    }
 
 }
-
