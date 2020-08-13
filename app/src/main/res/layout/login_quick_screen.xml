@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:id="@+id/lay"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center">
+
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:id="@+id/user_email_login"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white"
+            android:layout_margin="10dp"/>
+
+        <EditText
+            android:id="@+id/user_pass_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColorHint="@android:color/darker_gray"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/user_login_btn"
+            android:text="Login"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"/>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/login_activity_forgot_pass"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="Forgot password?"
+            android:gravity="center"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:id="@+id/move_to_register_screen"
+            android:text="Don't have an account? Create it now."
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/login_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lay"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

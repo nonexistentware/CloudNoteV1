@@ -15,16 +15,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProtectedActivity.NewSecuredNoteActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ProtectedActivity.EditSecuredCloudNoteActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ProtectedActivity.EditSecuredNoteActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ProtectedActivity.WarningScreenActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ProtectedActivity.SecuredMainActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.SecondLoginActivity"></activity>
+        <activity
+            android:name=".ProtectedActivity.NewSecuredNoteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProtectedActivity.EditSecuredCloudNoteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProtectedActivity.EditSecuredNoteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProtectedActivity.WarningScreenActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProtectedActivity.SecuredMainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.ForgotPasswordActivity"
             android:screenOrientation="portrait" />

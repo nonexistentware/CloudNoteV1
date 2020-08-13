@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.nonexistentware.cloudnotev1.Activity.LoginActivity;
+import com.nonexistentware.cloudnotev1.Activity.SecondLoginActivity;
 import com.nonexistentware.cloudnotev1.DB.NoteDataBase;
 import com.nonexistentware.cloudnotev1.DB.SecuredDataBase;
 import com.nonexistentware.cloudnotev1.Model.NoteItem;
@@ -187,6 +188,8 @@ public class EditSecuredNoteActivity extends AppCompatActivity implements PopupM
                                 Toast.makeText(getApplicationContext(), "Successfully uploaded to cloud.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "Failed while uploading to cloud." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }  if (auth.getCurrentUser() == null) {
+                                startActivity(new Intent(getApplicationContext(), SecondLoginActivity.class));
                             }
                         }
                     });
@@ -332,7 +335,7 @@ public class EditSecuredNoteActivity extends AppCompatActivity implements PopupM
                 Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
             }
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, SecondLoginActivity.class));
         }
     }
 

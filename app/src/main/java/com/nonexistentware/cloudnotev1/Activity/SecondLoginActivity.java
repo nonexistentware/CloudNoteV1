@@ -32,7 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.nonexistentware.cloudnotev1.R;
 
-public class LoginActivity extends AppCompatActivity {
+
+public class SecondLoginActivity extends AppCompatActivity {
 
     private TextView forgotPassBtn, loginBtn, toRegister;
     private EditText userInputMail, userInputPass;
@@ -49,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.activity_second_login);
         userInputMail = findViewById(R.id.user_email_login);
         userInputPass = findViewById(R.id.user_pass_login);
 
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = userInputPass.getText().toString().trim();
 
                 if (!TextUtils.isEmpty(mail) && !TextUtils.isEmpty(pass)) {
-                   logIn(mail, pass);
+                    logIn(mail, pass);
                 } else {
                     Toast.makeText(getApplicationContext(), "Email and password fields can't be empty", Toast.LENGTH_SHORT).show();
                 }
@@ -121,15 +121,15 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.INVISIBLE);
-                           if (task.isSuccessful()) {
-                               startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                               finish();
-                               Toast.makeText(getApplicationContext(), "Sing in successfully", Toast.LENGTH_SHORT).show();
-                           } else {
-                               progressBar.setVisibility(View.INVISIBLE);
-                               loginBtn.setVisibility(View.VISIBLE);
-                               Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                           }
+                        if (task.isSuccessful()) {
+//                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                            Toast.makeText(getApplicationContext(), "Successfully sign in", Toast.LENGTH_SHORT).show();
+                        } else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            loginBtn.setVisibility(View.VISIBLE);
+                            Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }
@@ -144,17 +144,17 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = auth.getCurrentUser();
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("google").setValue(idToken);
-                            Toast.makeText(LoginActivity.this, "Successfully sign in to Google account", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            Toast.makeText(SecondLoginActivity.this, "Successfully sign in to Google account", Toast.LENGTH_SHORT).show();
+//                            startActivity(new Intent(SecondLoginActivity.this, MainActivity.class));
                             finish();
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication fail ", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SecondLoginActivity.this, "Authentication fail ", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(LoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SecondLoginActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

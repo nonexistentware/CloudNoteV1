@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -160,7 +161,7 @@ public class EditNoteActivity extends AppCompatActivity implements PopupMenu.OnM
             Snackbar.make(v, "Note title can't be empty.", Snackbar.LENGTH_SHORT).show();
         }
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, SecondLoginActivity.class));
         }
     }
 
