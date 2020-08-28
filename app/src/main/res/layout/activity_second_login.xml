@@ -89,4 +89,15 @@
         android:layout_below="@id/lay"
         android:layout_centerInParent="true" />
 
+    <TextView
+        android:id="@+id/secondlogin_text_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_progress"
+        android:text="Login in progress..."
+        android:gravity="center"
+        android:textSize="15sp"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"/>
+
 </RelativeLayout>

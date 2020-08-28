@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -40,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference fUserDatabase;
 
     private ImageView userImg;
-    private TextView createUserBtn, toLogin;
+    private TextView createUserBtn, toLogin, registerIndTxt;
     private EditText userMail, userPass;
 
     ProgressBar progressBar;
@@ -67,6 +68,7 @@ public class RegisterActivity extends AppCompatActivity {
         toLogin = findViewById(R.id.to_login_screen);
 
         progressBar = findViewById(R.id.register_progress);
+        registerIndTxt = findViewById(R.id.create_text_indicator);
 
         auth = FirebaseAuth.getInstance();
         fUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
@@ -104,29 +106,40 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         progressBar.setVisibility(View.INVISIBLE);
+        registerIndTxt.setVisibility(View.INVISIBLE);
 
     }
 
     private void createNewUser(final String mail, String pass) {
         createUserBtn.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+        registerIndTxt.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                registerIndTxt.setText("This is taking longer than expected");
+            }
+        }, 5000);
         auth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful() && pickedImageUri == null) {
                             progressBar.setVisibility(View.INVISIBLE);
+                            registerIndTxt.setVisibility(View.INVISIBLE);
                             updateUserInfo(mail, auth.getCurrentUser());
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else if (task.isSuccessful() && pickedImageUri != null){
                             progressBar.setVisibility(View.INVISIBLE);
+                            registerIndTxt.setVisibility(View.INVISIBLE);
                             fUserDatabase.child(auth.getCurrentUser().getUid()).child("email").setValue(mail);
                             createProfileWithImage(mail, pickedImageUri, auth.getCurrentUser());
                             Toast.makeText(RegisterActivity.this, "Account successfully created", Toast.LENGTH_SHORT).show();
                         } else {
                             progressBar.setVisibility(View.INVISIBLE);
                             createUserBtn.setVisibility(View.VISIBLE);
+                            registerIndTxt.setVisibility(View.INVISIBLE);
                             Toast.makeText(RegisterActivity.this, "ERROR" + task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     }

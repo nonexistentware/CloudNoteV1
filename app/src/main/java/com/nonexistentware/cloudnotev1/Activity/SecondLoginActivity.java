@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -35,7 +36,7 @@ import com.nonexistentware.cloudnotev1.R;
 
 public class SecondLoginActivity extends AppCompatActivity {
 
-    private TextView forgotPassBtn, loginBtn, toRegister;
+    private TextView forgotPassBtn, loginBtn, toRegister, sLoginIndTxt;
     private EditText userInputMail, userInputPass;
 
     private FirebaseAuth auth;
@@ -58,11 +59,13 @@ public class SecondLoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.user_login_btn);
         forgotPassBtn = findViewById(R.id.login_activity_forgot_pass);
         progressBar = findViewById(R.id.login_progress);
+        sLoginIndTxt = findViewById(R.id.secondlogin_text_indicator);
         mGoogleLogin = findViewById(R.id.google_login);
 
         fUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         progressBar.setVisibility(View.INVISIBLE);
+        sLoginIndTxt.setVisibility(View.INVISIBLE);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -116,17 +119,26 @@ public class SecondLoginActivity extends AppCompatActivity {
     private void logIn(String mail, String pass) {
         loginBtn.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+        sLoginIndTxt.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sLoginIndTxt.setText("This is taking longer than expected");
+            }
+        }, 5000);
         auth.signInWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressBar.setVisibility(View.INVISIBLE);
+                        sLoginIndTxt.setVisibility(View.VISIBLE);
                         if (task.isSuccessful()) {
 //                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                             Toast.makeText(getApplicationContext(), "Successfully sign in", Toast.LENGTH_SHORT).show();
                         } else {
                             progressBar.setVisibility(View.INVISIBLE);
+                            sLoginIndTxt.setVisibility(View.VISIBLE);
                             loginBtn.setVisibility(View.VISIBLE);
                             Toast.makeText(getApplicationContext(), "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
