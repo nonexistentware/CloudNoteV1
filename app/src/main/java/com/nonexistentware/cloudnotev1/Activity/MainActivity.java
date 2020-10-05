@@ -9,6 +9,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.OnCompleteListener;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nonexistentware.cloudnotev1.Fragment.CloudNoteFragment;
@@ -21,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser currentUser;
 
+    //in app review
+    ReviewManager reviewManager;
+    ReviewInfo reviewInfo;
+
     BottomNavigationView bottomNavigation;
 
     //double tab exit
@@ -31,6 +41,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        reviewManager = ReviewManagerFactory.create(MainActivity.this);
+        Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+        request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
+            @Override
+            public void onComplete(Task<ReviewInfo> task) {
+                if (task.isSuccessful()) {
+                    reviewInfo = task.getResult();
+                    Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
+
+                    flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                                 
+                        }
+                    });
+                } else {
+                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();

@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 loginIndTxt.setText("This is taking longer than expected");
             }
         }, 5000);
+
         auth.signInWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
