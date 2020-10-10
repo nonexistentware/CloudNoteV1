@@ -8,8 +8,8 @@ android {
         applicationId "com.nonexistentware.cloudnotev1"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 34
-        versionName "3.9.GLOBAL"
+        versionCode 35
+        versionName "4.0.GLOBAL"
         multiDexEnabled
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +55,9 @@ dependencies {
 
     //fab
     implementation 'com.github.clans:fab:1.6.4'
+
+    //in app update
+    implementation 'eu.dkaratzas:android-inapp-update:1.0.5'
 
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"

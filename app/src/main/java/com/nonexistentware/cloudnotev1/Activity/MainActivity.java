@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -22,7 +26,11 @@ import com.nonexistentware.cloudnotev1.Fragment.MainNoteFragment;
 import com.nonexistentware.cloudnotev1.Fragment.UserFragment;
 import com.nonexistentware.cloudnotev1.R;
 
-public class MainActivity extends AppCompatActivity {
+import eu.dkaratzas.android.inapp.update.Constants;
+import eu.dkaratzas.android.inapp.update.InAppUpdateManager;
+import eu.dkaratzas.android.inapp.update.InAppUpdateStatus;
+
+public class MainActivity extends AppCompatActivity implements InAppUpdateManager.InAppUpdateHandler{
 
     FirebaseAuth auth;
     FirebaseUser currentUser;
@@ -36,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     //double tab exit
     private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;
+
+    //in app update
+    InAppUpdateManager inAppUpdateManager;
+    private static final int REQ_CODE_VERSION_UPDATE = 530;
+    private static final String TAG = "Sample";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     flow.addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void result) {
-                                 
+
                         }
                     });
                 } else {
@@ -62,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        inAppUpdateManager = InAppUpdateManager.Builder(this, REQ_CODE_VERSION_UPDATE)
+                .resumeUpdates(true)
+                .mode(Constants.UpdateMode.FLEXIBLE)
+                .useCustomNotification(true)
+                .handler(this);
+
+        inAppUpdateManager.checkForAppUpdate();
 
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -72,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout_main,
                     new MainNoteFragment()).commit();
         }
-
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -99,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             super.onBackPressed();
             return;
         } else {
@@ -108,4 +127,29 @@ public class MainActivity extends AppCompatActivity {
         }
         mBackPressed = System.currentTimeMillis();
     }
+
+    @Override
+    public void onInAppUpdateError(int code, Throwable error) {
+        Log.d(TAG, "code: " + code, error);
     }
+
+    @Override
+    public void onInAppUpdateStatus(InAppUpdateStatus status) {
+
+        if (status.isDownloaded()) {
+            View rootView = getWindow().getDecorView().findViewById(R.id.content);
+            Snackbar snackbar = Snackbar.make(rootView,
+                    "An update just been downloaded",
+                    Snackbar.LENGTH_INDEFINITE);
+
+            snackbar.setAction("Restart", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    inAppUpdateManager.completeUpdate();
+                }
+            });
+            snackbar.show();
+        }
+
+    }
+}
